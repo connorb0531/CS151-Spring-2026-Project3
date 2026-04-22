@@ -15,5 +15,5 @@ Connor Buckley, Shannon Lo, Chelsea Pham, and Julie Nguyen.
 | :---        |    :----:   |          ---: |
 | Connor Buckley | Title       | Here's this   |
 | Shannon Lo   | Snake Game Implementation        | (Bulletpoints of what was done)     |
-| Chelsea Pham |      |  |
+| Chelsea Pham | Game Manager Implementation | (Bulletpoints of what was done) |
 | Julie Nguyen |      |   |

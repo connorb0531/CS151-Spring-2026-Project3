@@ -8,6 +8,9 @@ Java 21/JavaFX 21
 ## Usage 
 ## Contributions
 ## Members
-- Connor
-- Shannon
-- Chelsea
+| Team Member      | Responsibility | Description     |
+| :---        |    :----:   |          ---: |
+| Connor      | Title       | Here's this   |
+| Shannon   | Snake Game Implementation        | (Bulletpoints of what was done)     |
+| Chelsea  |      |  |
+| Julie   |      |   |

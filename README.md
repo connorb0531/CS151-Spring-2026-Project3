@@ -6,8 +6,10 @@ Java 21/JavaFX 21
 ## Installation 
 ## Instructions 
 ## Usage 
-## Contributions
 ## Members
+
+## Contributions
+
 | Team Member      | Responsibility | Description     |
 | :---        |    :----:   |          ---: |
 | Connor      | Title       | Here's this   |

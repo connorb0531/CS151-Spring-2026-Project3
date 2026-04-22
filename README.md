@@ -7,12 +7,13 @@ Java 21/JavaFX 21
 ## Instructions 
 ## Usage 
 ## Members
+Connor Buckley, Shannon Lo, Chelsea Pham, and Julie Nguyen.
 
 ## Contributions
 
 | Team Member      | Responsibility | Description     |
 | :---        |    :----:   |          ---: |
-| Connor      | Title       | Here's this   |
-| Shannon   | Snake Game Implementation        | (Bulletpoints of what was done)     |
-| Chelsea  |      |  |
-| Julie   |      |   |
+| Connor Buckley | Title       | Here's this   |
+| Shannon Lo   | Snake Game Implementation        | (Bulletpoints of what was done)     |
+| Chelsea Pham |      |  |
+| Julie Nguyen |      |   |

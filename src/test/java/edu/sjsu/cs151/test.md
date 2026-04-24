@@ -1,0 +1,1 @@
+Test files mirrors same folder structure as: `main/java/edu/sjsu/cs151`

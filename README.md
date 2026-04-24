@@ -12,7 +12,7 @@ Connor Buckley, Shannon Lo, Chelsea Pham, and Julie Nguyen.
 ## Contributions
 
 | Team Member      | Responsibility | Description     |
-| :---        |    :----:   |          ---: |
+| :---        |    :----   |          :--- |
 | Connor Buckley | Blackjack       | Here's this   |
 | Shannon Lo   | Snake Game Implementation        | (Bulletpoints of what was done)     |
 | Chelsea Pham | Game Manager Implementation | (Bulletpoints of what was done) |

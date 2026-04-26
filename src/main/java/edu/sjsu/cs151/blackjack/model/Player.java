@@ -1,4 +1,4 @@
-package edu.sjsu.cs151.model;
+package edu.sjsu.cs151.blackjack.model;
 
 public class Player extends Participant {
     private String name;
@@ -32,6 +32,10 @@ public class Player extends Participant {
     public void pushBet() {
         bankRoll += currentBet;
         currentBet = 0;
+    }
+
+    public void resetBankRoll() {
+        bankRoll = INITIAL_BANKROLL;
     }
 
     public String getName() {

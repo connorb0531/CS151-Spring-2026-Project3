@@ -1,4 +1,4 @@
-package edu.sjsu.cs151.model;
+package edu.sjsu.cs151.blackjack.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +41,7 @@ public abstract class Participant {
             value += card.getRank().getValue();
         }
 
+        // ace(s) default value is 11 unless it causes bust
         if (aceCount > 0 && value + 10 <= 21) {
             value += 10;
         }

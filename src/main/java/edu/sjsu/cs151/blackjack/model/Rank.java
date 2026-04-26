@@ -1,4 +1,4 @@
-package edu.sjsu.cs151.model;
+package edu.sjsu.cs151.blackjack.model;
 
 public enum Rank {
     ACE(1),

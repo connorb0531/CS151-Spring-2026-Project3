@@ -1,4 +1,4 @@
-package edu.sjsu.cs151.model;
+package edu.sjsu.cs151.blackjack.model;
 
 import java.util.ArrayList;
 import java.util.Collections;

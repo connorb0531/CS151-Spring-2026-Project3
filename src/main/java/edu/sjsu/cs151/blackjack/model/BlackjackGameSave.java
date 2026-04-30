@@ -1,6 +1,7 @@
 package edu.sjsu.cs151.blackjack.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,4 +31,27 @@ public class BlackjackGameSave {
         
         return "error: saved failed";
     }
+
+    public BlackjackGame load(String saveStateString) throws FileNotFoundException {
+        File saveFolder = new File(SAVE_PATH);
+        if (!saveFolder.exists()) {
+            throw new FileNotFoundException("Save file does not exist");
+        }
+
+        File[] saveFiles = saveFolder.listFiles();
+        for (File file : saveFiles) {
+            String hashString = String.valueOf(file.toString().hashCode());
+            
+            if (saveStateString.equals(hashString)) {
+                try {
+                    return objectMapper.readValue(file, BlackjackGame.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
+    }
+    
 }

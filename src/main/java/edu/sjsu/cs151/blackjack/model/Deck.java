@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Deck {
     private List<Card> cards;
 
@@ -33,6 +35,7 @@ public class Deck {
         return card;
     }
 
+    @JsonIgnore
     public boolean isEmpty() {
         return cards.isEmpty();
     }

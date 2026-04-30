@@ -1,91 +1,161 @@
 package edu.sjsu.cs151.blackjack.controller;
 
+import edu.sjsu.cs151.blackjack.model.BlackjackGame;
+import edu.sjsu.cs151.blackjack.model.Card;
+import edu.sjsu.cs151.blackjack.model.Participant;
+import edu.sjsu.cs151.blackjack.model.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class BlackjackGameController {
 
-    @FXML
-    private Label turnLabel;
+    @FXML private Label turnLabel;
+    @FXML private Label dealerMoneyLabel;
+    @FXML private Label playerOneMoneyLabel;
+    @FXML private Label playerTwoMoneyLabel;
+    @FXML private Label humanMoneyLabel;
+    @FXML private Label statusLabel;
 
-    @FXML
-    private Label dealerMoneyLabel;
+    @FXML private HBox dealerCardsBox;
+    @FXML private HBox playerOneCardsBox;
+    @FXML private HBox playerTwoCardsBox;
+    @FXML private HBox humanCardsBox;
 
-    @FXML
-    private Label playerOneMoneyLabel;
+    @FXML private VBox dealerBox;
+    @FXML private VBox playerOneBox;
+    @FXML private VBox playerTwoBox;
+    @FXML private VBox humanBox;
 
-    @FXML
-    private Label playerTwoMoneyLabel;
+    @FXML private TextField betField;
+    @FXML private Button betButton;
+    @FXML private Button hitButton;
+    @FXML private Button standButton;
 
-    @FXML
-    private Label humanMoneyLabel;
-
-    @FXML
-    private Label statusLabel;
-
-    @FXML
-    private HBox dealerCardsBox;
-
-    @FXML
-    private HBox playerOneCardsBox;
-
-    @FXML
-    private HBox playerTwoCardsBox;
-
-    @FXML
-    private HBox humanCardsBox;
-
-    @FXML
-    private Button hitButton;
-
-    @FXML
-    private Button standButton;
+    private BlackjackGame game;
 
     @FXML
     public void initialize() {
-        showStartingGameDisplay();
+        Player human = new Player("You");
+        game = new BlackjackGame(human);
 
+        updateMoney();
+        disableGameButtons();
+
+        betButton.setOnAction(event -> placeBet());
         hitButton.setOnAction(event -> hit());
         standButton.setOnAction(event -> stand());
     }
 
-    private void showStartingGameDisplay() {
-        turnLabel.setText("Current Turn: You");
+    private void placeBet() {
+        try {
+            int amount = Integer.parseInt(betField.getText());
 
-        dealerMoneyLabel.setText("Money: $1000");
-        playerOneMoneyLabel.setText("Money: $1000");
-        playerTwoMoneyLabel.setText("Money: $1000");
-        humanMoneyLabel.setText("Money: $1000");
+            game.playerBet(amount);
+            game.startRound();
 
-        statusLabel.setText("Game started. Your turn.");
+            statusLabel.setText("Bet placed: $" + amount + ". Your turn.");
+            enableGameButtons();
+            updateUI();
 
+        } catch (NumberFormatException e) {
+            statusLabel.setText("Please enter a valid number for your bet.");
+        } catch (IllegalArgumentException e) {
+            statusLabel.setText(e.getMessage());
+        }
+    }
+
+    private void hit() {
+        game.playerHit();
+        statusLabel.setText("You hit.");
+        updateUI();
+    }
+
+    private void stand() {
+        game.playerStand();
+        statusLabel.setText("You stand. CPU players and dealer are playing.");
+        updateUI();
+    }
+
+    private void updateUI() {
+        updateTurn();
+        updateMoney();
+        updateCards();
+        updateHighlight();
+
+        if (!game.isRoundActive()) {
+            statusLabel.setText("Round result: " + game.getHumanRoundResult());
+            disableGameButtons();
+        }
+    }
+
+    private void updateTurn() {
+        turnLabel.setText("Current Turn: " + game.getRoundPhase());
+    }
+
+    private void updateMoney() {
+        humanMoneyLabel.setText("Money: $" + game.getHumanPlayer().getBankRoll());
+        playerOneMoneyLabel.setText("Money: $" + game.getCpuOne().getBankRoll());
+        playerTwoMoneyLabel.setText("Money: $" + game.getCpuTwo().getBankRoll());
+        dealerMoneyLabel.setText("Dealer");
+    }
+
+    private void updateCards() {
         dealerCardsBox.getChildren().clear();
         playerOneCardsBox.getChildren().clear();
         playerTwoCardsBox.getChildren().clear();
         humanCardsBox.getChildren().clear();
 
-        dealerCardsBox.getChildren().add(new Label("[10]"));
-        dealerCardsBox.getChildren().add(new Label("[?]"));
-
-        playerOneCardsBox.getChildren().add(new Label("[5]"));
-        playerOneCardsBox.getChildren().add(new Label("[9]"));
-
-        playerTwoCardsBox.getChildren().add(new Label("[7]"));
-        playerTwoCardsBox.getChildren().add(new Label("[8]"));
-
-        humanCardsBox.getChildren().add(new Label("[8]"));
-        humanCardsBox.getChildren().add(new Label("[K]"));
+        showCards(humanCardsBox, game.getHumanPlayer(), false);
+        showCards(playerOneCardsBox, game.getCpuOne(), false);
+        showCards(playerTwoCardsBox, game.getCpuTwo(), false);
+        showCards(dealerCardsBox, game.getDealer(), game.isDealerSecondCardHidden());
     }
 
-    private void hit() {
-        statusLabel.setText("You clicked Hit.");
-        humanCardsBox.getChildren().add(new Label("[3]"));
+    private void showCards(HBox box, Participant participant, boolean hideSecondCard) {
+        for (int i = 0; i < participant.getHand().size(); i++) {
+            if (hideSecondCard && i == 1) {
+                box.getChildren().add(new Label("[?]"));
+            } else {
+                Card card = participant.getHand().get(i);
+                box.getChildren().add(new Label("[" + card + "]"));
+            }
+        }
     }
 
-    private void stand() {
-        statusLabel.setText("You stand. Player 1's turn.");
-        turnLabel.setText("Current Turn: Player 1");
+    private void updateHighlight() {
+        clearHighlights();
+
+        String phase = String.valueOf(game.getRoundPhase());
+
+        if (phase.contains("PLAYER")) {
+            highlightBox(humanBox);
+        } else if (phase.contains("DEALER")) {
+            highlightBox(dealerBox);
+        }
+    }
+
+    private void clearHighlights() {
+        dealerBox.setStyle("-fx-padding: 10;");
+        playerOneBox.setStyle("-fx-padding: 10;");
+        playerTwoBox.setStyle("-fx-padding: 10;");
+        humanBox.setStyle("-fx-padding: 10;");
+    }
+
+    private void highlightBox(VBox box) {
+        box.setStyle("-fx-border-color: green; -fx-border-width: 3; -fx-padding: 10;");
+    }
+
+    private void disableGameButtons() {
+        hitButton.setDisable(true);
+        standButton.setDisable(true);
+    }
+
+    private void enableGameButtons() {
+        hitButton.setDisable(false);
+        standButton.setDisable(false);
     }
 }

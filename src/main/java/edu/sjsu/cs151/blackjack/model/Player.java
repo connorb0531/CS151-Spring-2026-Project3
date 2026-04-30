@@ -12,6 +12,10 @@ public class Player extends Participant {
         this.bankRoll = INITIAL_BANKROLL;
     }
 
+    public Player() {
+        super();
+    }
+
     public void placeBet(int amount) {
         if (amount <= 0) {
         throw new IllegalArgumentException("Bet must be greater than 0");

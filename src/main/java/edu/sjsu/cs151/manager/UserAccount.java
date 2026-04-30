@@ -30,8 +30,8 @@ public class UserAccount {
     public int getSnakeScore() { 
         return snakeScore; 
     }
-    public void setBlackjackScore(int score) { 
-        this.blackjackScore = score; 
+    public void setBlackjackScore(int score) {
+        this.blackjackScore = score;
     }
     public void setSnakeScore(int score) { 
         this.snakeScore = score; 

@@ -35,3 +35,9 @@ Used for data retrieval:
 - `getCpuOne()`
 - `getCpuTwo()`
 - `getDealer()`
+
+## Game serialization
+
+`BlackjackGameSave.java` provides functionality for saving game progess via serializing `BlackjackGame` into JSON file
+- `save()` accepts `BlackjackGame` and returns hashed string JSON file name
+- `load()` accepts said hashed string and returns corresponding `BlackjackGame`

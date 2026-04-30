@@ -3,6 +3,8 @@ package edu.sjsu.cs151.blackjack.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public abstract class Participant {
     private List<Card> hand;
     private int aceCount;
@@ -25,14 +27,17 @@ public abstract class Participant {
         hand.clear();
     }
 
+    @JsonIgnore
     public boolean isBusted() {
         return getHandValue() > 21;
     }
 
+    @JsonIgnore
     public boolean hasBlackjack() {
         return getHandValue() == 21;
     }
 
+    @JsonIgnore
     public int getHandValue() {
         int value = 0;
         

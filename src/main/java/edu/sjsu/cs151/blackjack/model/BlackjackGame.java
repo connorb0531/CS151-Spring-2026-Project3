@@ -1,5 +1,7 @@
 package edu.sjsu.cs151.blackjack.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class BlackjackGame {
     public enum RoundPhase {
         BETTING,
@@ -17,10 +19,10 @@ public class BlackjackGame {
         BUST
     }
 
-    private final Dealer dealer;
-    private final Player humanPlayer;
-    private final Player cpuOne;
-    private final Player cpuTwo;
+    private Dealer dealer;
+    private Player humanPlayer;
+    private Player cpuOne;
+    private Player cpuTwo;
     private Deck deck;
     private boolean roundActive;
     private RoundPhase roundPhase;
@@ -36,6 +38,8 @@ public class BlackjackGame {
         this.roundPhase = RoundPhase.BETTING;
         this.humanRoundResult = RoundResult.NONE;
     }
+
+    public BlackjackGame() {}
 
     public void startRound() {
         if (roundActive) {
@@ -107,6 +111,11 @@ public class BlackjackGame {
     public void playerStand() {
         ensureRoundActive();
         finishRound();
+    }
+
+    public String saveStateString() {
+        
+        return null;
     }
 
     private void resetRound() {
@@ -229,6 +238,7 @@ public class BlackjackGame {
         return humanRoundResult;
     }
 
+    @JsonIgnore
     public boolean isDealerSecondCardHidden() {
         return roundActive && roundPhase == RoundPhase.PLAYER_TURN;
     }

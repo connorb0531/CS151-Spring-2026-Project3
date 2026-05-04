@@ -19,6 +19,19 @@ public class BlackjackMenuController {
     @FXML
     private TextArea saveStateInput;
 
+    public static Parent getGameView() {
+        try {
+            return FXMLLoader.load(
+                    BlackjackMenuController.class.getResource(
+                            "/edu/sjsu/cs151/blackjack/view/fxml/blackjack-menu.fxml"
+                    )
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @FXML
     public void initialize() {
         startButton.setOnAction(event -> openGameScreen());

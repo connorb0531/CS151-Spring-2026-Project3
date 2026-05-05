@@ -159,14 +159,7 @@ public class GameManagerController {
             "-fx-pref-width: 380;"
         );
 
-        VBox wrapper = new VBox(card);
-        wrapper.setStyle(
-            "-fx-background-color: #f2f2f2;" +
-            "-fx-alignment: center;" +
-            "-fx-padding: 80;"
-        );
-
-        return wrapper;
+        return card;
     }
 
     public void showMainMenu() {
@@ -288,14 +281,6 @@ public class GameManagerController {
             "-fx-pref-width: 240;"
         );
 
-        Label chooseLabel = new Label("Choose a game");
-        chooseLabel.setStyle("-fx-font-size: 20; -fx-text-fill: #111111;");
-
-        Label subLabel = new Label("Pick one to start playing");
-        subLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #888888;");
-
-        VBox headingBox = new VBox(4, chooseLabel, subLabel);
-
         Label blackjackTitle = new Label("Blackjack");
         blackjackTitle.setStyle("-fx-font-size: 15; -fx-text-fill: #111111;");
 
@@ -399,7 +384,7 @@ public class GameManagerController {
         HBox cardRowOne = new HBox(16, blackjackCard, snakeCard);
         HBox cardRowTwo = new HBox(16, futureCardOne, futureCardTwo);
 
-        VBox gamesPanel = new VBox(24, headingBox, cardRowOne, cardRowTwo);
+        VBox gamesPanel = new VBox(24, cardRowOne, cardRowTwo);
         gamesPanel.setStyle(
             "-fx-background-color: #f2f2f2;" +
             "-fx-padding: 36;"

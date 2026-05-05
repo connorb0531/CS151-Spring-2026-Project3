@@ -52,7 +52,7 @@ public class SnakeGameController {
 
             case ESCAPE -> model.togglePause();
 
-            default    -> {}            
+            default -> {}            
 
         }
     }

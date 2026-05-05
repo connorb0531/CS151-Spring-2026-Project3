@@ -57,6 +57,14 @@ public class SnakeGameController {
 
             case ESCAPE -> model.togglePause();
 
+            case R -> {
+                if (model.getState() == SnakeGameState.GAME_OVER) {
+                    model = new SnakeGameModel();
+                    lastUpdate = 0;
+                    startGameLoop();
+                }
+            }
+
             default -> {}            
 
         }
@@ -72,7 +80,11 @@ public class SnakeGameController {
 
         if (model.getState() == SnakeGameState.GAME_OVER) {
             gc.setFill(Color.PINK);
-            gc.fillText("GAME OVER  Score: " + model.getScore(), 60, 200);
+            gc.setFont(javafx.scene.text.Font.font("Verdana", 20));
+            gc.fillText("GAME OVER", 140, 190);
+            gc.setFill(Color.WHITE);
+            gc.setFont(javafx.scene.text.Font.font("Verdana", 11));
+            gc.fillText("Score: " + model.getScore() + " |  Press R to restart", 115, 210);
             gameLoop.stop();
             return;
         }

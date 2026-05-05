@@ -78,8 +78,17 @@ public class SnakeGameController {
         }
 
         if (model.getState() == SnakeGameState.PAUSED) {
-            gc.setFill(Color.BLACK);
-            gc.fillText("PAUSED", 160, 200);
+            gc.setFill(Color.color(0, 0, 0, 0.55));
+
+            gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+
+            gc.setFill(Color.WHITE);
+            gc.setFont(javafx.scene.text.Font.font("Verdana", 36));
+            gc.fillText("PAUSED", 130, 185);
+
+            gc.setFill(Color.LIGHTGRAY);
+            gc.setFont(javafx.scene.text.Font.font("Verdana", 14));
+
             return;
         }
 

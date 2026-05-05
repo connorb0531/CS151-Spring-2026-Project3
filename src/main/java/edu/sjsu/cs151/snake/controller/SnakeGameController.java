@@ -89,6 +89,7 @@ public class SnakeGameController {
             gc.setFill(Color.LIGHTGRAY);
             gc.setFont(javafx.scene.text.Font.font("Verdana", 14));
 
+            gc.fillText("Press ESCAPE to resume", 160, 200);
             return;
         }
 

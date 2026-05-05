@@ -2,11 +2,13 @@ package edu.sjsu.cs151.snake.controller;
 
 import edu.sjsu.cs151.snake.model.Direction;
 import edu.sjsu.cs151.snake.model.SnakeGameModel;
-
+import edu.sjsu.cs151.snake.model.SnakeGameState;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
 
 public class SnakeGameController {
@@ -16,7 +18,9 @@ public class SnakeGameController {
     private SnakeGameModel model;
     private AnimationTimer gameLoop;
 
-    private static final long TICK_NS = 10_000_000L;
+    private static final int TILE = 20;
+
+    private static final long TICK_NS = 150_000_000L;
 
     private long lastUpdate = 0;
 
@@ -28,6 +32,7 @@ public class SnakeGameController {
 
     private void startGameLoop() {
         gameLoop = new AnimationTimer() {
+
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= TICK_NS) {
@@ -59,6 +64,38 @@ public class SnakeGameController {
 
   
     private void render() {
+
+        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, gameCanvas.getWidth(),gameCanvas.getHeight());
+
+        if (model.getState() == SnakeGameState.GAME_OVER) {
+            gc.setFill(Color.PINK);
+            gc.fillText("GAME OVER  Score: " + model.getScore(), 60, 200);
+            gameLoop.stop();
+            return;
+        }
+
+        if (model.getState() == SnakeGameState.PAUSED) {
+            gc.setFill(Color.BLACK);
+            gc.fillText("PAUSED", 160, 200);
+            return;
+        }
+
+        //make the food
+        gc.setFill(Color.PINK);
+
+        gc.fillOval(
+            model.getFood().getPosition().x * TILE,
+            model.getFood().getPosition().y * TILE,
+            TILE, TILE
+        );
+
+        gc.setFill(Color.FORESTGREEN);
+        for (var seg : model.getSnake().getBody()) {
+            gc.fillRect(seg.x * TILE, seg.y * TILE, TILE -1, TILE -1);
+        }
 
     }
 

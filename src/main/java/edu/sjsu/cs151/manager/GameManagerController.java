@@ -62,37 +62,111 @@ public class GameManagerController {
         Label title = new Label("Game Manager");
         title.setStyle("-fx-font-size: 26;");
 
+        Label subtitle = new Label("Sign in to continue");
+        subtitle.setStyle("-fx-font-size: 14; -fx-text-fill: #888888;");
+
         Label usernameLabel = new Label("Username");
+        usernameLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #555555;");
+
         TextField usernameField = new TextField();
         usernameField.setPromptText("Enter username");
+        usernameField.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 8;" +
+            "-fx-border-color: #dddddd;" +
+            "-fx-border-radius: 8;" +
+            "-fx-padding: 8;" +
+            "-fx-font-size: 13;"
+        );
 
         Label passwordLabel = new Label("Password");
+        passwordLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #555555;");
+
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Enter password");
+        passwordField.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 8;" +
+            "-fx-border-color: #dddddd;" +
+            "-fx-border-radius: 8;" +
+            "-fx-padding: 8;" +
+            "-fx-font-size: 13;"
+        );
 
         Label errorLabel = new Label("");
-        errorLabel.setStyle("-fx-text-fill: red;");
+        errorLabel.setStyle("-fx-text-fill: red; -fx-font-size: 13;");
 
         Button loginButton = new Button("Log In");
+        loginButton.setStyle(
+            "-fx-background-color: #185FA5;" +
+            "-fx-background-radius: 8;" +
+            "-fx-text-fill: #E6F1FB;" +
+            "-fx-font-size: 14;" +
+            "-fx-padding: 10 0 10 0;" +
+            "-fx-pref-width: 300;"
+        );
+
         Button createButton = new Button("Create Account");
+        createButton.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 8;" +
+            "-fx-border-color: #dddddd;" +
+            "-fx-border-radius: 8;" +
+            "-fx-font-size: 13;" +
+            "-fx-padding: 9 0 9 0;" +
+            "-fx-pref-width: 300;"
+        );
 
         loginButton.setOnAction(e -> {
-            boolean success = login(usernameField.getText(), passwordField.getText());
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
+            if (username.isEmpty() || password.isEmpty()) {
+                errorLabel.setText("Please enter a username and password.");
+                return;
+            }
+            boolean success = login(username, password);
             if (!success) {
                 errorLabel.setText("Invalid username or password.");
             }
         });
 
         createButton.setOnAction(e -> {
-            boolean success = createAccount(usernameField.getText(), passwordField.getText());
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
+            if (username.isEmpty() || password.isEmpty()) {
+                errorLabel.setText("Please enter a username and password.");
+                return;
+            }
+            boolean success = createAccount(username, password);
             if (!success) {
                 errorLabel.setText("Username already taken.");
             }
         });
 
-        VBox loginScreen = new VBox(10, title, usernameLabel, usernameField, passwordLabel, passwordField, errorLabel, loginButton, createButton);
-        loginScreen.setStyle("-fx-padding: 40; -fx-background-color: #f2f2f2;");
-        return loginScreen;
+        VBox card = new VBox(14,
+            title, subtitle,
+            usernameLabel, usernameField,
+            passwordLabel, passwordField,
+            errorLabel,
+            loginButton, createButton
+        );
+        card.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 12;" +
+            "-fx-border-color: #e0e0e0;" +
+            "-fx-border-radius: 12;" +
+            "-fx-padding: 40;" +
+            "-fx-pref-width: 380;"
+        );
+
+        VBox wrapper = new VBox(card);
+        wrapper.setStyle(
+            "-fx-background-color: #f2f2f2;" +
+            "-fx-alignment: center;" +
+            "-fx-padding: 80;"
+        );
+
+        return wrapper;
     }
 
     public void showMainMenu() {

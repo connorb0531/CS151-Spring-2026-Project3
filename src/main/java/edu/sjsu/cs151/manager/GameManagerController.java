@@ -220,23 +220,192 @@ public class GameManagerController {
     }
 
     private HBox buildMainMenu() {
-        Label scoresTitle = new Label("High Scores");
-        VBox scoresPanel = new VBox(10, scoresTitle);
+        Label blackjackHeading = new Label("BLACKJACK");
+        blackjackHeading.setStyle("-fx-font-size: 11; -fx-text-fill: #111111;");
 
-        Label gamesTitle = new Label("Choose a game");
-        Button blackjackButton = new Button("Play Blackjack");
-        Button snakeButton = new Button("Play Snake");
+        VBox blackjackScores = new VBox(4, blackjackHeading);
+        java.util.List<HighScoreEntry> topBlackjackScores = scoreManager.getTopBlackjack(5);
+        for (int i = 0; i < topBlackjackScores.size(); i++) {
+            HighScoreEntry entry = topBlackjackScores.get(i);
 
+            Label nameLabel = new Label(entry.getUsername());
+            nameLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #111111;");
+
+            Label scoreLabel = new Label(String.valueOf(entry.getScore()));
+            if (i == 0) {
+                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #185FA5;");
+            } else {
+                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
+            }
+
+            BorderPane row = new BorderPane();
+            row.setLeft(nameLabel);
+            row.setRight(scoreLabel);
+            if (i == 0) {
+                row.setStyle("-fx-background-color: #f0f5ff; -fx-background-radius: 6; -fx-padding: 6 10 6 10;");
+            } else {
+                row.setStyle("-fx-padding: 6 10 6 10;");
+            }
+
+            blackjackScores.getChildren().add(row);
+        }
+
+        Label snakeHeading = new Label("SNAKE");
+        snakeHeading.setStyle("-fx-font-size: 11; -fx-text-fill: #111111;");
+
+        VBox snakeScores = new VBox(4, snakeHeading);
+        java.util.List<HighScoreEntry> topSnakeScores = scoreManager.getTopSnake(5);
+        for (int i = 0; i < topSnakeScores.size(); i++) {
+            HighScoreEntry entry = topSnakeScores.get(i);
+
+            Label nameLabel = new Label(entry.getUsername());
+            nameLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #111111;");
+
+            Label scoreLabel = new Label(String.valueOf(entry.getScore()));
+            if (i == 0) {
+                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #185FA5;");
+            } else {
+                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
+            }
+
+            BorderPane row = new BorderPane();
+            row.setLeft(nameLabel);
+            row.setRight(scoreLabel);
+            if (i == 0) {
+                row.setStyle("-fx-background-color: #f0f5ff; -fx-background-radius: 6; -fx-padding: 6 10 6 10;");
+            } else {
+                row.setStyle("-fx-padding: 6 10 6 10;");
+            }
+
+            snakeScores.getChildren().add(row);
+        }
+
+        VBox scoresPanel = new VBox(20, blackjackScores, snakeScores);
+        scoresPanel.setStyle(
+            "-fx-background-color: #f8f8f8;" +
+            "-fx-border-color: #e8e8e8;" +
+            "-fx-padding: 24 16 24 16;" +
+            "-fx-pref-width: 240;"
+        );
+
+        Label chooseLabel = new Label("Choose a game");
+        chooseLabel.setStyle("-fx-font-size: 20; -fx-text-fill: #111111;");
+
+        Label subLabel = new Label("Pick one to start playing");
+        subLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #888888;");
+
+        VBox headingBox = new VBox(4, chooseLabel, subLabel);
+
+        Label blackjackTitle = new Label("Blackjack");
+        blackjackTitle.setStyle("-fx-font-size: 15; -fx-text-fill: #111111;");
+
+        Button blackjackButton = new Button("Play now");
+        blackjackButton.setStyle(
+            "-fx-background-color: #185FA5;" +
+            "-fx-background-radius: 8;" +
+            "-fx-text-fill: #E6F1FB;" +
+            "-fx-font-size: 13;" +
+            "-fx-padding: 9 0 9 0;" +
+            "-fx-pref-width: 180;"
+        );
         blackjackButton.setOnAction(e -> {
             // launch blackjack
         });
 
+        VBox blackjackCard = new VBox(12, blackjackTitle, blackjackButton);
+        blackjackCard.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 10;" +
+            "-fx-border-color: #e0e0e0;" +
+            "-fx-border-radius: 10;" +
+            "-fx-padding: 20;" +
+            "-fx-pref-width: 200;"
+        );
+
+        Label snakeTitle = new Label("Snake");
+        snakeTitle.setStyle("-fx-font-size: 15; -fx-text-fill: #111111;");
+
+        Button snakeButton = new Button("Play now");
+        snakeButton.setStyle(
+            "-fx-background-color: #3B6D11;" +
+            "-fx-background-radius: 8;" +
+            "-fx-text-fill: #EAF3DE;" +
+            "-fx-font-size: 13;" +
+            "-fx-padding: 9 0 9 0;" +
+            "-fx-pref-width: 180;"
+        );
         snakeButton.setOnAction(e -> {
             // launch snake
         });
 
-        VBox gamesPanel = new VBox(10, gamesTitle, blackjackButton, snakeButton);
-        return new HBox(40, scoresPanel, gamesPanel);
+        VBox snakeCard = new VBox(12, snakeTitle, snakeButton);
+        snakeCard.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 10;" +
+            "-fx-border-color: #e0e0e0;" +
+            "-fx-border-radius: 10;" +
+            "-fx-padding: 20;" +
+            "-fx-pref-width: 200;"
+        );
+
+        Label futureLabelOne = new Label("Coming soon");
+        futureLabelOne.setStyle("-fx-font-size: 15; -fx-text-fill: #aaaaaa;");
+
+        Button futureButtonOne = new Button("Unavailable");
+        futureButtonOne.setStyle(
+            "-fx-background-color: #eeeeee;" +
+            "-fx-background-radius: 8;" +
+            "-fx-text-fill: #bbbbbb;" +
+            "-fx-font-size: 13;" +
+            "-fx-padding: 9 0 9 0;" +
+            "-fx-pref-width: 180;"
+        );
+        futureButtonOne.setDisable(true);
+
+        VBox futureCardOne = new VBox(12, futureLabelOne, futureButtonOne);
+        futureCardOne.setStyle(
+            "-fx-background-color: #fafafa;" +
+            "-fx-background-radius: 10;" +
+            "-fx-border-color: #eeeeee;" +
+            "-fx-border-radius: 10;" +
+            "-fx-padding: 20;" +
+            "-fx-pref-width: 200;"
+        );
+
+        Label futureLabelTwo = new Label("Coming soon");
+        futureLabelTwo.setStyle("-fx-font-size: 15; -fx-text-fill: #aaaaaa;");
+
+        Button futureButtonTwo = new Button("Unavailable");
+        futureButtonTwo.setStyle(
+            "-fx-background-color: #eeeeee;" +
+            "-fx-background-radius: 8;" +
+            "-fx-text-fill: #bbbbbb;" +
+            "-fx-font-size: 13;" +
+            "-fx-padding: 9 0 9 0;" +
+            "-fx-pref-width: 180;"
+        );
+        futureButtonTwo.setDisable(true);
+
+        VBox futureCardTwo = new VBox(12, futureLabelTwo, futureButtonTwo);
+        futureCardTwo.setStyle(
+            "-fx-background-color: #fafafa;" +
+            "-fx-background-radius: 10;" +
+            "-fx-border-color: #eeeeee;" +
+            "-fx-border-radius: 10;" +
+            "-fx-padding: 20;" +
+            "-fx-pref-width: 200;"
+        );
+
+        HBox cardRowOne = new HBox(16, blackjackCard, snakeCard);
+        HBox cardRowTwo = new HBox(16, futureCardOne, futureCardTwo);
+
+        VBox gamesPanel = new VBox(24, headingBox, cardRowOne, cardRowTwo);
+        gamesPanel.setStyle(
+            "-fx-background-color: #f2f2f2;" +
+            "-fx-padding: 36;"
+        );
+
+        return new HBox(scoresPanel, gamesPanel);
     }
 
 }

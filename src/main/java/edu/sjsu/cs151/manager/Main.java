@@ -7,7 +7,7 @@ public class Main extends Application{
     @Override
     public void start(Stage primaryStage) {
         GameManagerController controller = new GameManagerController(primaryStage);
-        controller.initialize(); //calling showLoginScreen()
+        controller.initialize();
     }
 
     public static void main(String[] args){

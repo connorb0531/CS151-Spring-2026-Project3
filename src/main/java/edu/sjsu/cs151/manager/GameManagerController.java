@@ -1,5 +1,7 @@
 package edu.sjsu.cs151.manager;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -55,11 +57,30 @@ public class GameManagerController {
     }
 
     public void showMainMenu() {
+        Scene scene = new Scene(buildMainMenu(), 400, 400);
+        stage.setScene(scene);
 
+        stage.show();
     }
 
     private HBox buildMainMenu() {
-        return new HBox();
+        Button playButton = new Button("Play Snake");
+        playButton.setOnAction(e -> showSnakeGame());
+        
+        return new HBox(playButton);
+    }
+
+    public void showSnakeGame() {
+        try {
+            javafx.scene.Parent gameView = edu.sjsu.cs151.snake.controller.SnakeMenuController.getGameView();
+            javafx.scene.Scene scene = new javafx.scene.Scene(gameView, 400, 400);
+            stage.setScene(scene);
+            gameView.requestFocus();
+
+        } catch (Exception e) {
+            System.out.println("Failed to load snake game: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }

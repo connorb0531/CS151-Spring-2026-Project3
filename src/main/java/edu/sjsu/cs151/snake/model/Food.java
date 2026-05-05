@@ -30,7 +30,7 @@ public class Food implements Collidable{
     }
 
     @Override
-    public boolean collidsWith(Point p) {
+    public boolean collidesWith(Point p) {
         return position.equals(p);
     }
 

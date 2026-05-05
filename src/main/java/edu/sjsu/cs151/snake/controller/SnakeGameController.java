@@ -45,12 +45,14 @@ public class SnakeGameController {
     @FXML
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
-            case UP    -> model.changeDirection(Direction.UP);
-            case DOWN  -> model.changeDirection(Direction.DOWN);
-            case LEFT  -> model.changeDirection(Direction.LEFT);
+            case UP -> model.changeDirection(Direction.UP);
+            case DOWN -> model.changeDirection(Direction.DOWN);
+            case LEFT -> model.changeDirection(Direction.LEFT);
             case RIGHT -> model.changeDirection(Direction.RIGHT);
 
             case ESCAPE -> model.togglePause();
+
+            default    -> {}            
 
         }
     }

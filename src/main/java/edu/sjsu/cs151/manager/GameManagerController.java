@@ -171,7 +171,48 @@ public class GameManagerController {
 
     public void showMainMenu() {
         rootLayout = new BorderPane();
-        rootLayout.setCenter(buildMainMenu());
+
+        Label userLabel = new Label(currentUser.getUsername());
+        userLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #888888;");
+
+        Button mainMenuBtn = new Button("Main Menu");
+        mainMenuBtn.setStyle(
+            "-fx-background-color: #2a2a2a;" +
+            "-fx-background-radius: 6;" +
+            "-fx-border-color: #444444;" +
+            "-fx-border-radius: 6;" +
+            "-fx-text-fill: #4a90d9;" +
+            "-fx-font-size: 12;" +
+            "-fx-padding: 5 14 5 14;"
+        );
+
+        Button logoutButton = new Button("Logout");
+        logoutButton.setStyle(
+            "-fx-background-color: #2a2a2a;" +
+            "-fx-background-radius: 6;" +
+            "-fx-border-color: #444444;" +
+            "-fx-border-radius: 6;" +
+            "-fx-text-fill: #999999;" +
+            "-fx-font-size: 12;" +
+            "-fx-padding: 5 14 5 14;"
+        );
+
+        mainMenuBtn.setOnAction(e -> showMainMenu());
+        logoutButton.setOnAction(e -> {
+            currentUser = null;
+            showLoginScreen();
+        });
+
+        BorderPane toolbar = new BorderPane();
+        toolbar.setLeft(userLabel);
+        toolbar.setRight(new HBox(8, mainMenuBtn, logoutButton));
+        toolbar.setStyle("-fx-background-color: #1e1e1e; -fx-padding: 12 20 12 20;");
+
+        BorderPane centerWrapper = new BorderPane();
+        centerWrapper.setCenter(buildMainMenu());
+
+        rootLayout.setTop(toolbar);
+        rootLayout.setCenter(centerWrapper);
 
         stage.setScene(new Scene(rootLayout, 950, 650));
         stage.setTitle("Game Manager");

@@ -61,7 +61,7 @@ public class Snake implements Collidable {
 
     @Override
     public boolean collidsWith(Point p) {
-        throw new UnsupportedOperationException("Unimplemented method 'collidsWith'");
+        return getHead().equals(p);
     }
 
 }

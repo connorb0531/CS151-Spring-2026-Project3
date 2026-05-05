@@ -17,6 +17,7 @@ public final class Point {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Point p)) return false;
+        return x == p.x && y == p.y;
     }
 
     @Override

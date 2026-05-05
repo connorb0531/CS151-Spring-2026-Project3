@@ -6,6 +6,11 @@ Java 21/JavaFX 21
 ## Installation -- Connor
 ## Instructions -- Chelsea
 ## Usage -- Shannon
+
+## Video Demo LINK
+@julie
+
+
 ## Members
 Connor Buckley, Shannon Lo, Chelsea Pham, and Julie Nguyen.
 

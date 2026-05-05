@@ -60,7 +60,7 @@ public class Snake implements Collidable {
 
 
     @Override
-    public boolean collidsWith(Point p) {
+    public boolean collidesWith(Point p) {
         return getHead().equals(p);
     }
 

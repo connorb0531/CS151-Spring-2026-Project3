@@ -59,7 +59,7 @@ Connor Buckley, Shannon Lo, Chelsea Pham, and Julie Nguyen.
 
 | Team Member      | Responsibility | Description     |
 | :---        |    :----   |          :--- |
-| Connor Buckley | Blackjack       | Here's this   |
+| Connor Buckley | Blackjack | Core game logic in `edu.sjsu.cs151.blackjack.model` (e.g. deck, cards, player, dealer, game rules and save state). |
 | Shannon Lo   | Snake Game Implementation        | - what i did|
 | Chelsea Pham | Game Manager Implementation | (Bulletpoints of what was done) |
 | Julie Nguyen | Blackjack |   |

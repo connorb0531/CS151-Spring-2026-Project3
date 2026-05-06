@@ -212,6 +212,35 @@ public class GameManagerController {
         stage.show();
     }
 
+    public void navigateToMainMenu() {
+        showMainMenu();
+    }
+
+    public void logout() {
+        currentUser = null;
+        showLoginScreen();
+    }
+
+    public void launchBlackjack(String username) {
+        try {
+            javafx.scene.Parent view = edu.sjsu.cs151.blackjack.controller.BlackjackMenuController.getGameView();
+            stage.setScene(new Scene(view, 950, 650));
+            stage.setTitle("Blackjack");
+        } catch (Exception e) {
+            System.out.println("Failed to load blackjack: " + e.getMessage());
+        }
+    }
+
+    public void launchSnakeGame(String username) {
+        try {
+            javafx.scene.Parent view = edu.sjsu.cs151.snake.controller.SnakeMenuController.getGameView();
+            stage.setScene(new Scene(view, 950, 650));
+            stage.setTitle("Snake");
+        } catch (Exception e) {
+            System.out.println("Failed to load snake: " + e.getMessage());
+        }
+    }
+
     private HBox buildMainMenu() {
         Label blackjackHeading = new Label("BLACKJACK");
         blackjackHeading.setStyle("-fx-font-size: 11; -fx-text-fill: #111111;");
@@ -278,7 +307,8 @@ public class GameManagerController {
             "-fx-background-color: #f8f8f8;" +
             "-fx-border-color: #e8e8e8;" +
             "-fx-padding: 24 16 24 16;" +
-            "-fx-pref-width: 240;"
+            "-fx-pref-width: 240;" +
+            "-fx-min-height: 600;"
         );
 
         Label blackjackTitle = new Label("Blackjack");

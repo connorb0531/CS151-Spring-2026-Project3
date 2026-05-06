@@ -274,7 +274,7 @@ public class GameManagerController {
             stage.setScene(new Scene(layout, 950, 650));
             stage.setTitle("Snake");
         } catch (Exception e) {
-            System.out.println("Failed to load snake: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

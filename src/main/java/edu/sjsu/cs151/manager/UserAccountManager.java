@@ -1,5 +1,6 @@
 package edu.sjsu.cs151.manager;
 
+import edu.sjsu.cs151.util.CipherUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -26,7 +27,7 @@ public class UserAccountManager {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
 
-                UserAccount account = new UserAccount(parts[0], parts[1]);
+                UserAccount account = new UserAccount(parts[0], CipherUtil.decrypt(parts[1]));
                 account.setBlackjackScore(Integer.parseInt(parts[2]));
                 account.setSnakeScore(Integer.parseInt(parts[3]));
                 accounts.add(account);
@@ -41,7 +42,7 @@ public class UserAccountManager {
     public void saveAccounts(){
         try (PrintWriter writer = new PrintWriter(new FileWriter(FILE))) {
             for (UserAccount a : accounts) {
-                writer.println(a.getUsername() + "," + a.getPasswordHash() + ","
+                writer.println(a.getUsername() + "," + CipherUtil.encrypt(a.getPasswordHash()) + ","
                         + a.getBlackjackScore() + "," + a.getSnakeScore());
             }
         } catch (IOException e) {

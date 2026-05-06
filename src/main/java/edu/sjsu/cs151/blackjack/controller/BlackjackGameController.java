@@ -134,7 +134,7 @@ public class BlackjackGameController {
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(90);
         imageView.setFitHeight(130);
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(false);
         return imageView;
     }
 

@@ -16,10 +16,13 @@ public class Snake implements Collidable {
 
         int[][] starts = {{startX, startY}, {startX+3, startY}, {startX-3, startY}, {startX, startY+3}};
         int[] start = starts[rand.nextInt(starts.length)];
-        int x = start[0], y = start[1];
+        
 
-        List<Direction> dirs = List.of(Direction.values());
-        currentDirection = dirs.get(rand.nextInt(dirs.size()));
+        int x = Math.max(2, Math.min(start[0], SnakeGameModel.BOARD_WIDTH - 3));
+        int y = Math.max(2, Math.min(start[1], SnakeGameModel.BOARD_HEIGHT - 3));
+
+        Direction[] dirs = Direction.values();
+        currentDirection = dirs[rand.nextInt(dirs.length)];
 
         int dx = 0, dy = 0;
 

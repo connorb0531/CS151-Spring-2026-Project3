@@ -28,6 +28,9 @@ public class SnakeGameController {
     public void initialize() {
         model = new SnakeGameModel();
         startGameLoop();
+
+        gameCanvas.setFocusTraversable(true);
+        gameCanvas.requestFocus(); 
     }
 
     private void startGameLoop() {
@@ -72,6 +75,7 @@ public class SnakeGameController {
 
   
     private void render() {
+        gameCanvas.requestFocus();
 
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 

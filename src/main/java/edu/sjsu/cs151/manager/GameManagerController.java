@@ -165,6 +165,22 @@ public class GameManagerController {
     public void showMainMenu() {
         rootLayout = new BorderPane();
 
+        BorderPane centerWrapper = new BorderPane();
+        centerWrapper.setCenter(buildMainMenu());
+
+        rootLayout.setTop(buildToolbar());
+        rootLayout.setCenter(centerWrapper);
+
+        stage.setScene(new Scene(rootLayout, 950, 650));
+        stage.setTitle("Game Manager");
+        stage.show();
+    }
+
+    private BorderPane buildToolbar() {
+        return buildToolbar(null);
+    }
+
+    private BorderPane buildToolbar(Runnable backAction) {
         Label userLabel = new Label(currentUser.getUsername());
         userLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #888888;");
 
@@ -191,25 +207,75 @@ public class GameManagerController {
         );
 
         mainMenuBtn.setOnAction(e -> showMainMenu());
-        logoutButton.setOnAction(e -> {
-            currentUser = null;
-            showLoginScreen();
-        });
+        logoutButton.setOnAction(e -> logout());
+
+        HBox rightButtons = new HBox(8, mainMenuBtn, logoutButton);
+
+        if (backAction != null) {
+            Button goBackBtn = new Button("Go Back");
+            goBackBtn.setStyle(
+                "-fx-background-color: #2a2a2a;" +
+                "-fx-background-radius: 6;" +
+                "-fx-border-color: #444444;" +
+                "-fx-border-radius: 6;" +
+                "-fx-text-fill: #cccccc;" +
+                "-fx-font-size: 12;" +
+                "-fx-padding: 5 14 5 14;"
+            );
+            goBackBtn.setOnAction(e -> backAction.run());
+            rightButtons.getChildren().add(0, goBackBtn);
+        }
 
         BorderPane toolbar = new BorderPane();
         toolbar.setLeft(userLabel);
-        toolbar.setRight(new HBox(8, mainMenuBtn, logoutButton));
+        toolbar.setRight(rightButtons);
         toolbar.setStyle("-fx-background-color: #1e1e1e; -fx-padding: 12 20 12 20;");
+        return toolbar;
+    }
 
-        BorderPane centerWrapper = new BorderPane();
-        centerWrapper.setCenter(buildMainMenu());
+    public void navigateToMainMenu() {
+        showMainMenu();
+    }
 
-        rootLayout.setTop(toolbar);
-        rootLayout.setCenter(centerWrapper);
+    public void logout() {
+        currentUser = null;
+        showLoginScreen();
+    }
 
-        stage.setScene(new Scene(rootLayout, 950, 650));
-        stage.setTitle("Game Manager");
-        stage.show();
+    public void launchBlackjack(String fxmlPath) {
+        boolean isGameScreen = fxmlPath != null;
+        String path = isGameScreen ? fxmlPath : "/edu/sjsu/cs151/blackjack/view/fxml/blackjack-menu.fxml";
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                edu.sjsu.cs151.blackjack.controller.BlackjackMenuController.class.getResource(path)
+            );
+            javafx.scene.Parent view = loader.load();
+            Object controller = loader.getController();
+            if (controller instanceof edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) {
+                ((edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) controller).setGameManagerController(this);
+            }
+            BorderPane layout = new BorderPane();
+            Runnable backAction = isGameScreen ? () -> launchBlackjack(null) : null;
+            layout.setTop(buildToolbar(backAction));
+            layout.setCenter(view);
+            stage.setScene(new Scene(layout, 950, 650));
+            stage.setTitle("Blackjack");
+        } catch (Exception e) {
+            System.out.println("Failed to load blackjack: " + e.getMessage());
+        }
+    }
+
+    public void launchSnakeGame(String username) {
+        try {
+            javafx.scene.Parent view = edu.sjsu.cs151.snake.controller.SnakeMenuController.getGameView();
+            BorderPane layout = new BorderPane();
+            layout.setTop(buildToolbar(() -> launchSnakeGame(null)));
+            layout.setCenter(view);
+            stage.setScene(new Scene(layout, 950, 650));
+            stage.setTitle("Snake");
+        } catch (Exception e) {
+            System.out.println("Failed to load snake: " + e.getMessage());
+        }
     }
 
     private HBox buildMainMenu() {
@@ -278,7 +344,8 @@ public class GameManagerController {
             "-fx-background-color: #f8f8f8;" +
             "-fx-border-color: #e8e8e8;" +
             "-fx-padding: 24 16 24 16;" +
-            "-fx-pref-width: 240;"
+            "-fx-pref-width: 240;" +
+            "-fx-min-height: 600;"
         );
 
         Label blackjackTitle = new Label("Blackjack");
@@ -293,9 +360,7 @@ public class GameManagerController {
             "-fx-padding: 9 0 9 0;" +
             "-fx-pref-width: 180;"
         );
-        blackjackButton.setOnAction(e -> {
-            // launch blackjack
-        });
+        blackjackButton.setOnAction(e -> launchBlackjack(null));
 
         VBox blackjackCard = new VBox(12, blackjackTitle, blackjackButton);
         blackjackCard.setStyle(
@@ -319,9 +384,7 @@ public class GameManagerController {
             "-fx-padding: 9 0 9 0;" +
             "-fx-pref-width: 180;"
         );
-        snakeButton.setOnAction(e -> {
-            // launch snake
-        });
+        snakeButton.setOnAction(e -> launchSnakeGame(currentUser.getUsername()));
 
         VBox snakeCard = new VBox(12, snakeTitle, snakeButton);
         snakeCard.setStyle(

@@ -2,6 +2,7 @@ package edu.sjsu.cs151.snake.controller;
 
 import edu.sjsu.cs151.snake.model.SnakeGameModel;
 import edu.sjsu.cs151.snake.model.SnakeGameState;
+import edu.sjsu.cs151.snake.model.Direction;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -52,7 +53,7 @@ public class SnakeGameController {
     @FXML
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
-            case UP -> model.changeDirection(Direction.UP)""
+            case UP -> model.changeDirection(Direction.UP);
             case DOWN -> model.changeDirection(Direction.DOWN);
             case LEFT -> model.changeDirection(Direction.LEFT);
             case RIGHT -> model.changeDirection(Direction.RIGHT);
@@ -60,11 +61,10 @@ public class SnakeGameController {
             case ESCAPE -> model.togglePause();
 
             case R -> {
-                    model = new SnakeGameModel();
-                    lastUpdate = 0;
-                    gameLoop.stop();
-                    startGameLoop();
-                }
+                model = new SnakeGameModel();
+                lastUpdate = 0;
+                gameLoop.stop();
+                startGameLoop();
             }
 
             default -> {}            
@@ -77,17 +77,34 @@ public class SnakeGameController {
         gameCanvas.requestFocus();
 
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        double w = gameCanvas.getWidth(), h = gameCanvas.getHeight();
 
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, gameCanvas.getWidth(),gameCanvas.getHeight());
+        for (int x = 0; x * TILE < w; x++) {
+            for (int y = 0; y * TILE < h; y++) {
+                gc.setFill((x + y) % 2 == 0 ? Color.web("#1a3a1a") : Color.web("#1f451f"));
+                gc.fillRect(x * TILE, y * TILE, TILE, TILE);
+            }
+        }
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(javafx.scene.text.Font.font("Verdana", 14));
+        gc.fillText("Score: " + model.getScore(), 10, 20);
+
 
         if (model.getState() == SnakeGameState.GAME_OVER) {
+    
+            gc.setFill(Color.color(0, 0, 0, 0.6));
+            gc.fillRect(0, 0, w, h);
+
             gc.setFill(Color.PINK);
-            gc.setFont(javafx.scene.text.Font.font("Verdana", 20));
-            gc.fillText("GAME OVER", 140, 190);
+            gc.setFont(javafx.scene.text.Font.font("Verdana", 36));
+            String gameover = "GAME OVER";
+            gc.fillText(gameover, w / 2 - 100, h / 2 - 20); 
+
             gc.setFill(Color.WHITE);
             gc.setFont(javafx.scene.text.Font.font("Verdana", 11));
-            gc.fillText("Score: " + model.getScore() + " |  Press R to restart", 115, 210);
+            String score = "Score: " + model.getScore() + " |  Press R to restart";
+            gc.fillText(score, w / 2 - 115, h / 2 + 15);
             gameLoop.stop();
             return;
         }
@@ -99,16 +116,16 @@ public class SnakeGameController {
 
             gc.setFill(Color.WHITE);
             gc.setFont(javafx.scene.text.Font.font("Verdana", 36));
-            gc.fillText("PAUSED", 130, 185);
+            gc.fillText("PAUSED", w / 2 - 70, h / 2 - 10);
 
             gc.setFill(Color.LIGHTGRAY);
             gc.setFont(javafx.scene.text.Font.font("Verdana", 14));
 
-            gc.fillText("Press ESCAPE to resume", 160, 200);
+            gc.fillText("Press ESCAPE to resume", w / 2 - 105, h / 2 + 20);
             return;
         }
 
-        //make the food
+
         gc.setFill(Color.PINK);
 
         gc.fillOval(
@@ -117,8 +134,10 @@ public class SnakeGameController {
             TILE, TILE
         );
 
-        gc.setFill(Color.FORESTGREEN);
-        for (var seg : model.getSnake().getBody()) {
+        var body = model.getSnake().getBody();
+        for (int i = 0; i < body.size(); i++) {
+            var seg = body.get(i);
+            gc.setFill(i % 2 == 0 ? Color.FORESTGREEN : Color.web("#4a8a3a"));
             gc.fillRect(seg.x * TILE, seg.y * TILE, TILE -1, TILE -1);
         }
 

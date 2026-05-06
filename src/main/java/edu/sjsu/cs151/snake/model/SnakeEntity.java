@@ -8,5 +8,7 @@ public abstract class SnakeEntity {
         this.position = position;
     }
 
-    public Point getPosition() { return position; }
+    public Point getPosition() { 
+        return position; 
+    }
 }

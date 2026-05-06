@@ -149,6 +149,8 @@ public class BlackjackGameController {
         box.setStyle("-fx-border-color: green; -fx-border-width: 3; -fx-padding: 10;");
     }
 
+    public int getBalance() { return game.getHumanPlayer().getBankRoll(); }
+
     private void disableGameButtons() {
         hitButton.setDisable(true);
         standButton.setDisable(true);

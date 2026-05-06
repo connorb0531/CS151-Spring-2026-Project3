@@ -71,6 +71,8 @@ public class SnakeGameController {
     }
 
   
+    public int getScore() { return model.getScore(); }
+
     private void render() {
 
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();

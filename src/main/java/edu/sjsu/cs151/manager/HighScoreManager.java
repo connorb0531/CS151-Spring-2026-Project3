@@ -80,16 +80,25 @@ public class HighScoreManager {
     // Adds a default score of 1000 for a new user in both games
     public void initialDefaultScore(String username) {
         blackjackScores.add(new HighScoreEntry(username, 1000));
-        snakeScores.add(new HighScoreEntry(username, 1000));
+        snakeScores.add(new HighScoreEntry(username, 0));
         saveScores();
     }
 
     // Replaces user's old score and sorts highest to lowest while keeping only top 5
     private void updateScore(List<HighScoreEntry> list, String username, int score) {
+        int existing = list.stream()
+            .filter(e -> e.getUsername().equals(username))
+            .mapToInt(HighScoreEntry::getScore)
+            .findFirst()
+            .orElse(-1);
+
+        if (score <= existing) return;
+
         list.removeIf(e -> e.getUsername().equals(username));
         list.add(new HighScoreEntry(username, score));
         list.sort(Comparator.comparingInt(HighScoreEntry::getScore).reversed());
         if (list.size() > 5) list.subList(5, list.size()).clear();
+
     }
 
     // Returns a sublist of the top n entries

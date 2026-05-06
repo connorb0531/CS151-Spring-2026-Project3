@@ -2,9 +2,14 @@ package edu.sjsu.cs151.snake.controller;
 
 import edu.sjsu.cs151.snake.model.SnakeGameModel;
 import edu.sjsu.cs151.snake.model.SnakeGameState;
+
+import java.io.IOException;
+
 import edu.sjsu.cs151.snake.model.Direction;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
@@ -17,12 +22,17 @@ public class SnakeGameController {
 
     private SnakeGameModel model;
     private AnimationTimer gameLoop;
+    private Runnable onGameOver;
 
-    private static final int TILE = 20;
+    private static final int TILE = SnakeGameModel.TILE;
 
     private static final long TICK_NS = 150_000_000L;
 
     private long lastUpdate = 0;
+
+    public void setOnGameOver(Runnable callback) {
+        this.onGameOver = callback;
+    }
 
     @FXML
     public void initialize() {
@@ -48,6 +58,21 @@ public class SnakeGameController {
 
         gameLoop.start();
     }
+
+
+    public static javafx.util.Pair<Parent, SnakeGameController> getGameView() throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+            SnakeMenuController.class.getResource("/edu/sjsu/cs151/snake/view/fxml/snake-game.fxml")
+        );
+        
+        Parent view = loader.load();
+        SnakeGameController controller = loader.getController();
+        return new javafx.util.Pair<>(view, controller);
+    }
+
+    public SnakeGameModel getModel() {
+    return model;
+        }
 
 
     @FXML
@@ -106,6 +131,12 @@ public class SnakeGameController {
             String score = "Score: " + model.getScore() + " |  Press R to restart";
             gc.fillText(score, w / 2 - 115, h / 2 + 15);
             gameLoop.stop();
+
+            if (onGameOver != null) {
+                onGameOver.run();
+                onGameOver = null;
+            }
+
             return;
         }
 

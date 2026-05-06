@@ -46,7 +46,7 @@ public class BlackjackMenuController {
 
     private void openGameScreen() {
         if (gameManagerController != null) {
-            gameManagerController.launchBlackjack(null);
+            gameManagerController.launchBlackjack("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml");
         }
     }
 

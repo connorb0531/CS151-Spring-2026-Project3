@@ -1,6 +1,5 @@
 package edu.sjsu.cs151.snake.controller;
 
-import edu.sjsu.cs151.snake.model.Direction;
 import edu.sjsu.cs151.snake.model.SnakeGameModel;
 import edu.sjsu.cs151.snake.model.SnakeGameState;
 import javafx.animation.AnimationTimer;
@@ -53,7 +52,7 @@ public class SnakeGameController {
     @FXML
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
-            case UP -> model.changeDirection(Direction.UP);
+            case UP -> model.changeDirection(Direction.UP)""
             case DOWN -> model.changeDirection(Direction.DOWN);
             case LEFT -> model.changeDirection(Direction.LEFT);
             case RIGHT -> model.changeDirection(Direction.RIGHT);
@@ -61,9 +60,9 @@ public class SnakeGameController {
             case ESCAPE -> model.togglePause();
 
             case R -> {
-                if (model.getState() == SnakeGameState.GAME_OVER) {
                     model = new SnakeGameModel();
                     lastUpdate = 0;
+                    gameLoop.stop();
                     startGameLoop();
                 }
             }

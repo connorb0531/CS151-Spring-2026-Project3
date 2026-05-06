@@ -177,6 +177,10 @@ public class GameManagerController {
     }
 
     private BorderPane buildToolbar() {
+        return buildToolbar(null);
+    }
+
+    private BorderPane buildToolbar(Runnable backAction) {
         Label userLabel = new Label(currentUser.getUsername());
         userLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #888888;");
 
@@ -205,9 +209,26 @@ public class GameManagerController {
         mainMenuBtn.setOnAction(e -> showMainMenu());
         logoutButton.setOnAction(e -> logout());
 
+        HBox rightButtons = new HBox(8, mainMenuBtn, logoutButton);
+
+        if (backAction != null) {
+            Button goBackBtn = new Button("Go Back");
+            goBackBtn.setStyle(
+                "-fx-background-color: #2a2a2a;" +
+                "-fx-background-radius: 6;" +
+                "-fx-border-color: #444444;" +
+                "-fx-border-radius: 6;" +
+                "-fx-text-fill: #cccccc;" +
+                "-fx-font-size: 12;" +
+                "-fx-padding: 5 14 5 14;"
+            );
+            goBackBtn.setOnAction(e -> backAction.run());
+            rightButtons.getChildren().add(0, goBackBtn);
+        }
+
         BorderPane toolbar = new BorderPane();
         toolbar.setLeft(userLabel);
-        toolbar.setRight(new HBox(8, mainMenuBtn, logoutButton));
+        toolbar.setRight(rightButtons);
         toolbar.setStyle("-fx-background-color: #1e1e1e; -fx-padding: 12 20 12 20;");
         return toolbar;
     }
@@ -221,18 +242,21 @@ public class GameManagerController {
         showLoginScreen();
     }
 
-    public void launchBlackjack(String username) {
+    public void launchBlackjack(String fxmlPath) {
+        boolean isGameScreen = fxmlPath != null;
+        String path = isGameScreen ? fxmlPath : "/edu/sjsu/cs151/blackjack/view/fxml/blackjack-menu.fxml";
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                edu.sjsu.cs151.blackjack.controller.BlackjackMenuController.class.getResource(
-                    "/edu/sjsu/cs151/blackjack/view/fxml/blackjack-menu.fxml"
-                )
+                edu.sjsu.cs151.blackjack.controller.BlackjackMenuController.class.getResource(path)
             );
             javafx.scene.Parent view = loader.load();
-            edu.sjsu.cs151.blackjack.controller.BlackjackMenuController bmc = loader.getController();
-            bmc.setGameManagerController(this);
+            Object controller = loader.getController();
+            if (controller instanceof edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) {
+                ((edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) controller).setGameManagerController(this);
+            }
             BorderPane layout = new BorderPane();
-            layout.setTop(buildToolbar());
+            Runnable backAction = isGameScreen ? () -> launchBlackjack(null) : null;
+            layout.setTop(buildToolbar(backAction));
             layout.setCenter(view);
             stage.setScene(new Scene(layout, 950, 650));
             stage.setTitle("Blackjack");
@@ -245,7 +269,7 @@ public class GameManagerController {
         try {
             javafx.scene.Parent view = edu.sjsu.cs151.snake.controller.SnakeMenuController.getGameView();
             BorderPane layout = new BorderPane();
-            layout.setTop(buildToolbar());
+            layout.setTop(buildToolbar(() -> launchSnakeGame(null)));
             layout.setCenter(view);
             stage.setScene(new Scene(layout, 950, 650));
             stage.setTitle("Snake");
@@ -336,7 +360,7 @@ public class GameManagerController {
             "-fx-padding: 9 0 9 0;" +
             "-fx-pref-width: 180;"
         );
-        blackjackButton.setOnAction(e -> launchBlackjack(currentUser.getUsername()));
+        blackjackButton.setOnAction(e -> launchBlackjack(null));
 
         VBox blackjackCard = new VBox(12, blackjackTitle, blackjackButton);
         blackjackCard.setStyle(

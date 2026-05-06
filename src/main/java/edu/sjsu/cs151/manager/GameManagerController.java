@@ -165,6 +165,18 @@ public class GameManagerController {
     public void showMainMenu() {
         rootLayout = new BorderPane();
 
+        BorderPane centerWrapper = new BorderPane();
+        centerWrapper.setCenter(buildMainMenu());
+
+        rootLayout.setTop(buildToolbar());
+        rootLayout.setCenter(centerWrapper);
+
+        stage.setScene(new Scene(rootLayout, 950, 650));
+        stage.setTitle("Game Manager");
+        stage.show();
+    }
+
+    private BorderPane buildToolbar() {
         Label userLabel = new Label(currentUser.getUsername());
         userLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #888888;");
 
@@ -191,25 +203,13 @@ public class GameManagerController {
         );
 
         mainMenuBtn.setOnAction(e -> showMainMenu());
-        logoutButton.setOnAction(e -> {
-            currentUser = null;
-            showLoginScreen();
-        });
+        logoutButton.setOnAction(e -> logout());
 
         BorderPane toolbar = new BorderPane();
         toolbar.setLeft(userLabel);
         toolbar.setRight(new HBox(8, mainMenuBtn, logoutButton));
         toolbar.setStyle("-fx-background-color: #1e1e1e; -fx-padding: 12 20 12 20;");
-
-        BorderPane centerWrapper = new BorderPane();
-        centerWrapper.setCenter(buildMainMenu());
-
-        rootLayout.setTop(toolbar);
-        rootLayout.setCenter(centerWrapper);
-
-        stage.setScene(new Scene(rootLayout, 950, 650));
-        stage.setTitle("Game Manager");
-        stage.show();
+        return toolbar;
     }
 
     public void navigateToMainMenu() {
@@ -223,8 +223,18 @@ public class GameManagerController {
 
     public void launchBlackjack(String username) {
         try {
-            javafx.scene.Parent view = edu.sjsu.cs151.blackjack.controller.BlackjackMenuController.getGameView();
-            stage.setScene(new Scene(view, 950, 650));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                edu.sjsu.cs151.blackjack.controller.BlackjackMenuController.class.getResource(
+                    "/edu/sjsu/cs151/blackjack/view/fxml/blackjack-menu.fxml"
+                )
+            );
+            javafx.scene.Parent view = loader.load();
+            edu.sjsu.cs151.blackjack.controller.BlackjackMenuController bmc = loader.getController();
+            bmc.setGameManagerController(this);
+            BorderPane layout = new BorderPane();
+            layout.setTop(buildToolbar());
+            layout.setCenter(view);
+            stage.setScene(new Scene(layout, 950, 650));
             stage.setTitle("Blackjack");
         } catch (Exception e) {
             System.out.println("Failed to load blackjack: " + e.getMessage());
@@ -234,7 +244,10 @@ public class GameManagerController {
     public void launchSnakeGame(String username) {
         try {
             javafx.scene.Parent view = edu.sjsu.cs151.snake.controller.SnakeMenuController.getGameView();
-            stage.setScene(new Scene(view, 950, 650));
+            BorderPane layout = new BorderPane();
+            layout.setTop(buildToolbar());
+            layout.setCenter(view);
+            stage.setScene(new Scene(layout, 950, 650));
             stage.setTitle("Snake");
         } catch (Exception e) {
             System.out.println("Failed to load snake: " + e.getMessage());
@@ -323,9 +336,7 @@ public class GameManagerController {
             "-fx-padding: 9 0 9 0;" +
             "-fx-pref-width: 180;"
         );
-        blackjackButton.setOnAction(e -> {
-            // launch blackjack
-        });
+        blackjackButton.setOnAction(e -> launchBlackjack(currentUser.getUsername()));
 
         VBox blackjackCard = new VBox(12, blackjackTitle, blackjackButton);
         blackjackCard.setStyle(
@@ -349,9 +360,7 @@ public class GameManagerController {
             "-fx-padding: 9 0 9 0;" +
             "-fx-pref-width: 180;"
         );
-        snakeButton.setOnAction(e -> {
-            // launch snake
-        });
+        snakeButton.setOnAction(e -> launchSnakeGame(currentUser.getUsername()));
 
         VBox snakeCard = new VBox(12, snakeTitle, snakeButton);
         snakeCard.setStyle(

@@ -1,8 +1,8 @@
 package edu.sjsu.cs151.snake.model;
 
 import java.util.LinkedList;
+import java.util.List;
 
-//this snake is a list of Points
 public class Snake implements Collidable {
 
     private LinkedList<Point> body;
@@ -11,16 +11,29 @@ public class Snake implements Collidable {
     public Snake(int startX, int startY) {
         body = new LinkedList<>(); 
 
-        // head
-        body.add(new Point(startX, startY)); 
+        // generate random starting position!
+        java.util.Random rand = new java.util.Random();
+
+        int[][] starts = {{startX, startY}, {startX+3, startY}, {startX-3, startY}, {startX, startY+3}};
+        int[] start = starts[rand.nextInt(starts.length)];
+        int x = start[0], y = start[1];
+
+        List<Direction> dirs = List.of(Direction.values());
+        currentDirection = dirs.get(rand.nextInt(dirs.size()));
+
+        int dx = 0, dy = 0;
+
+        if (currentDirection == Direction.RIGHT) dx = -1;
+        if (currentDirection == Direction.LEFT)  dx =  1;
+        if (currentDirection == Direction.DOWN)  dy = -1;
+        if (currentDirection == Direction.UP)    dy =  1;
+
+        body.add(new Point(x, y)); 
+
+        body.add(new Point(x + dx, y + dy));
+
+        body.add(new Point(x + dx*2, y + dy*2));
         
-        // middle
-
-        body.add(new Point(startX - 1, startY));
-
-        // tail
-        body.add(new Point(startX - 2, startY));
-        currentDirection = Direction.RIGHT;
     }
 
 

@@ -54,8 +54,9 @@ public class SnakeGameController {
 
     private void startMusic() {
         try {
-            java.net.URL resource = getClass().getResource("/edu/sjsu/cs151/snake/view/music/YENA.mp3");
-            Media media = new Media(resource.toString());
+            java.net.URI uri = new java.io.File("src/main/resources/music/YENA.mp3").toURI();
+            javafx.scene.media.Media media = new javafx.scene.media.Media(uri.toString());
+
             musicPlayer = new MediaPlayer(media);
             musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
             musicPlayer.setVolume(0.5);

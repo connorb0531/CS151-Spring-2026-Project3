@@ -8,13 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class BlackjackGameController {
 
@@ -41,21 +36,6 @@ public class BlackjackGameController {
     @FXML private Button standButton;
 
     private BlackjackGame game;
-    private MediaPlayer musicPlayer;
-
-    private void startMusic() {
-        try {
-            java.net.URI uri = new java.io.File("src/main/resources/music/Strategy.mp3").toURI();
-            javafx.scene.media.Media media = new javafx.scene.media.Media(uri.toString());
-        
-            musicPlayer = new MediaPlayer(media);
-            musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-            musicPlayer.setVolume(0.5);
-            musicPlayer.play();
-        } catch (Exception e) {
-            System.out.println("Could not load blackjack music: " + e.getMessage());
-        }
-    }
 
     @FXML
     public void initialize() {
@@ -68,8 +48,6 @@ public class BlackjackGameController {
         betButton.setOnAction(event -> placeBet());
         hitButton.setOnAction(event -> hit());
         standButton.setOnAction(event -> stand());
-
-        startMusic();
     }
 
     public void setGame(BlackjackGame loadedGame) {
@@ -122,7 +100,6 @@ public class BlackjackGameController {
         if (!game.isRoundActive()) {
             statusLabel.setText("Round result: " + game.getHumanRoundResult());
             disableGameButtons();
-            betButton.setDisable(false);
         }
     }
 
@@ -152,25 +129,12 @@ public class BlackjackGameController {
     private void showCards(HBox box, Participant participant, boolean hideSecondCard) {
         for (int i = 0; i < participant.getHand().size(); i++) {
             if (hideSecondCard && i == 1) {
-                box.getChildren().add(createCardImageView("/PNG-cards/CARD_BACK.png"));
+                box.getChildren().add(new Label("[?]"));
             } else {
                 Card card = participant.getHand().get(i);
-                box.getChildren().add(createCardImageView(getCardImagePath(card)));
+                box.getChildren().add(new Label("[" + card + "]"));
             }
         }
-    }
-
-    private ImageView createCardImageView(String imagePath) {
-        Image image = new Image(getClass().getResourceAsStream(imagePath));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(90);
-        imageView.setFitHeight(130);
-        imageView.setPreserveRatio(false);
-        return imageView;
-    }
-
-    private String getCardImagePath(Card card) {
-        return "/PNG-cards/" + card.getRank().name() + "_" + card.getSuit().name() + ".png";
     }
 
     private void updateHighlight() {

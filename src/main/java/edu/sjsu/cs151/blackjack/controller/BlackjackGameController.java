@@ -1,6 +1,7 @@
 package edu.sjsu.cs151.blackjack.controller;
 
 import edu.sjsu.cs151.blackjack.model.BlackjackGame;
+import edu.sjsu.cs151.blackjack.model.BlackjackGameSave;
 import edu.sjsu.cs151.blackjack.model.Card;
 import edu.sjsu.cs151.blackjack.model.Participant;
 import edu.sjsu.cs151.blackjack.model.Player;
@@ -12,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -38,6 +41,10 @@ public class BlackjackGameController {
     @FXML private Button betButton;
     @FXML private Button hitButton;
     @FXML private Button standButton;
+    @FXML private Button saveButton;
+    @FXML private HBox saveStateRow;
+    @FXML private TextField saveStateField;
+    @FXML private Button copySaveStateButton;
 
     private BlackjackGame game;
 
@@ -52,16 +59,22 @@ public class BlackjackGameController {
         betButton.setOnAction(event -> placeBet());
         hitButton.setOnAction(event -> hit());
         standButton.setOnAction(event -> stand());
+        saveButton.setOnAction(event -> saveGame());
+        copySaveStateButton.setOnAction(event -> copySaveStateToClipboard());
     }
 
     public void setGame(BlackjackGame loadedGame) {
-        game = loadedGame;
+        this.game = loadedGame;
+        saveStateField.clear();
+        saveStateRow.setVisible(false);
+        saveStateRow.setManaged(false);
         updateUI();
-
         if (game.isRoundActive()) {
             enableGameButtons();
+            betButton.setDisable(true);
         } else {
             disableGameButtons();
+            betButton.setDisable(false);
         }
     }
 
@@ -93,6 +106,30 @@ public class BlackjackGameController {
         game.playerStand();
         statusLabel.setText("You stand. CPU players and dealer are playing.");
         updateUI();
+    }
+
+    private void saveGame() {
+        BlackjackGameSave persistence = new BlackjackGameSave();
+        String saveStateString = persistence.save(game);
+
+        if ("error: saved failed".equals(saveStateString)) {
+            statusLabel.setText("Save failed.");
+            return;
+        }
+
+        saveStateField.setText(saveStateString);
+        saveStateRow.setVisible(true);
+        saveStateRow.setManaged(true);
+    }
+
+    private void copySaveStateToClipboard() {
+        String text = saveStateField.getText();
+        if (text == null || text.isEmpty()) {
+            return;
+        }
+        ClipboardContent content = new ClipboardContent();
+        content.putString(text);
+        Clipboard.getSystemClipboard().setContent(content);
     }
 
     private void updateUI() {

@@ -46,8 +46,14 @@
     <HBox spacing="10" alignment="CENTER">
         <Button fx:id="hitButton" text="Hit" />
         <Button fx:id="standButton" text="Stand" />
+        <Button fx:id="saveButton" text="Save" />
     </HBox>
 
-    <Label fx:id="statusLabel" text="Place a bet to start." />
+    <HBox fx:id="saveStateRow" spacing="8" alignment="CENTER" visible="false" managed="false">
+        <TextField fx:id="saveStateField" editable="false" prefColumnCount="20" />
+        <Button fx:id="copySaveStateButton" text="Copy" />
+    </HBox>
+
+    <Label fx:id="statusLabel" text="Place a bet to start." wrapText="true" maxWidth="900" />
 
 </VBox>

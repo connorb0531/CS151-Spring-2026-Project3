@@ -79,7 +79,12 @@ public class BlackjackMenuController {
         }
 
         try {
-            BlackjackGame loadedGame = BlackjackGameSave.load(saveStateString.trim());
+            BlackjackGameSave persistence = new BlackjackGameSave();
+            BlackjackGame loadedGame = persistence.load(saveStateString.trim());
+            if (loadedGame == null) {
+                System.out.println("No save matched the given state string.");
+                return;
+            }
             openLoadedGameScreen(loadedGame);
 
         } catch (Exception e) {

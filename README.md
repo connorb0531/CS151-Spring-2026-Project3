@@ -57,9 +57,9 @@ Connor Buckley, Shannon Lo, Chelsea Pham, and Julie Nguyen.
 
 ## Contributions
 
-| Team Member      | Responsibility | Description     |
-| :---        |    :----   |          :--- |
+| Team Member      | Responsibility | Description |
+| :---        | :----   | :--- |
 | Connor Buckley | Blackjack | Core game logic in `edu.sjsu.cs151.blackjack.model` (e.g. deck, cards, player, dealer, game rules and save state). |
-| Shannon Lo   | Snake Game Implementation        | - what i did|
+| Shannon Lo   | Snake Game Implementation | - what i did |
 | Chelsea Pham | Game Manager Implementation | (Bulletpoints of what was done) |
-| Julie Nguyen | Blackjack |   |
+| Julie Nguyen | Blackjack | I implemented the Blackjack frontend using JavaFX, FXML, and controller classes. I created the Blackjack start menu with buttons to start a new game and load a game using a saveStateString input, and added a getGameView() method for Game Manager integration. I built the main game UI with sections for the human player, CPU players, and dealer, including card displays, Hit/Stand buttons, bankroll labels, betting input, turn display and highlighting, and status messages. The UI is connected to the BlackjackGame backend to handle gameplay, including placing bets, starting rounds, updating bankrolls, displaying cards (with hidden dealer card), and calling playerHit() and playerStand(). |

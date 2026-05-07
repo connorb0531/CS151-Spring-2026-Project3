@@ -208,8 +208,8 @@ public class GameManagerController {
             "-fx-padding: 5 14 5 14;"
         );
 
-        mainMenuBtn.setOnAction(e -> showMainMenu());
-        logoutButton.setOnAction(e -> logout());
+        mainMenuBtn.setOnAction(e -> { saveCurrentGameScore(); showMainMenu(); });
+        logoutButton.setOnAction(e -> { saveCurrentGameScore(); logout(); });
 
         HBox rightButtons = new HBox(8, mainMenuBtn, logoutButton);
 
@@ -233,6 +233,15 @@ public class GameManagerController {
         toolbar.setRight(rightButtons);
         toolbar.setStyle("-fx-background-color: #1e1e1e; -fx-padding: 12 20 12 20;");
         return toolbar;
+    }
+
+    private void saveCurrentGameScore() {
+        if (blackjackGameController != null && currentUser != null) {
+            scoreManager.updateBlackjackScore(currentUser.getUsername(), blackjackGameController.getBalance());
+        }
+        if (snakeGameController != null && currentUser != null) {
+            scoreManager.updateSnakeScore(currentUser.getUsername(), snakeGameController.getScore());
+        }
     }
 
     public void navigateToMainMenu() {

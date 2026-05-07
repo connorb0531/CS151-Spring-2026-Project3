@@ -21,6 +21,12 @@ public class BlackjackMenuController {
     @FXML
     private TextArea saveStateInput;
 
+    private edu.sjsu.cs151.manager.GameManagerController gameManagerController;
+
+    public void setGameManagerController(edu.sjsu.cs151.manager.GameManagerController gmc) {
+        this.gameManagerController = gmc;
+    }
+
     public static Parent getGameView() {
         try {
             return FXMLLoader.load(
@@ -50,6 +56,9 @@ public class BlackjackMenuController {
 
         } catch (IOException e) {
             e.printStackTrace();
+    private void openGameScreen() {
+        if (gameManagerController != null) {
+            gameManagerController.launchBlackjack("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml");
         }
     }
 

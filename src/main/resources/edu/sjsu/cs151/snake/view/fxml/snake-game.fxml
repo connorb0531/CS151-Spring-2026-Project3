@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.canvas.Canvas?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+    fx:controller="edu.sjsu.cs151.snake.controller.SnakeGameController"
+    onKeyPressed="#handleKeyPress"
+    focusTraversable="true"
+    prefWidth="940" prefHeight="640">
+
+    <Canvas fx:id="gameCanvas" width="940" height="640"/>
+</StackPane>

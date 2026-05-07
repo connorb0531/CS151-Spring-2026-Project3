@@ -311,20 +311,12 @@ public class GameManagerController {
             nameLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #111111;");
 
             Label scoreLabel = new Label(String.valueOf(entry.getScore()));
-            if (i == 0) {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #185FA5;");
-            } else {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
-            }
+            scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
 
             BorderPane row = new BorderPane();
             row.setLeft(nameLabel);
             row.setRight(scoreLabel);
-            if (i == 0) {
-                row.setStyle("-fx-background-color: #f0f5ff; -fx-background-radius: 6; -fx-padding: 6 10 6 10;");
-            } else {
-                row.setStyle("-fx-padding: 6 10 6 10;");
-            }
+            row.setStyle("-fx-padding: 6 10 6 10;");
 
             blackjackScores.getChildren().add(row);
         }
@@ -341,20 +333,12 @@ public class GameManagerController {
             nameLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #111111;");
 
             Label scoreLabel = new Label(String.valueOf(entry.getScore()));
-            if (i == 0) {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #185FA5;");
-            } else {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
-            }
+            scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
 
             BorderPane row = new BorderPane();
             row.setLeft(nameLabel);
             row.setRight(scoreLabel);
-            if (i == 0) {
-                row.setStyle("-fx-background-color: #f0f5ff; -fx-background-radius: 6; -fx-padding: 6 10 6 10;");
-            } else {
-                row.setStyle("-fx-padding: 6 10 6 10;");
-            }
+            row.setStyle("-fx-padding: 6 10 6 10;");
 
             snakeScores.getChildren().add(row);
         }

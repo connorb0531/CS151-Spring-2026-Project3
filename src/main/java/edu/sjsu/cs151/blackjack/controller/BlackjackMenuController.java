@@ -42,20 +42,10 @@ public class BlackjackMenuController {
 
     @FXML
     public void initialize() {
-        startButton.setOnAction(event -> openNewGameScreen());
+        startButton.setOnAction(event -> openGameScreen());
         loadButton.setOnAction(event -> loadGame());
     }
 
-    private void openNewGameScreen() {
-        try {
-            Parent gameScreen = FXMLLoader.load(
-                    getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
-            );
-
-            startButton.getScene().setRoot(gameScreen);
-
-        } catch (IOException e) {
-            e.printStackTrace();
     private void openGameScreen() {
         if (gameManagerController != null) {
             gameManagerController.launchBlackjack("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml");

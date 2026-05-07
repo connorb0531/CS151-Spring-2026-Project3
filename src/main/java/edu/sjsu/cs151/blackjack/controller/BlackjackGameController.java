@@ -72,6 +72,17 @@ public class BlackjackGameController {
         startMusic();
     }
 
+    public void setGame(BlackjackGame loadedGame) {
+        game = loadedGame;
+        updateUI();
+
+        if (game.isRoundActive()) {
+            enableGameButtons();
+        } else {
+            disableGameButtons();
+        }
+    }
+
     private void placeBet() {
         try {
             int amount = Integer.parseInt(betField.getText());

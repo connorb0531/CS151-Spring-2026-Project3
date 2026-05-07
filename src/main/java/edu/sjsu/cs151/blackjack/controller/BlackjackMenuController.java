@@ -47,6 +47,11 @@ public class BlackjackMenuController {
     }
 
     private void openNewGameScreen() {
+        if (gameManagerController != null) {
+            gameManagerController.launchBlackjack("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml");
+            return;
+        }
+
         try {
             Parent gameScreen = FXMLLoader.load(
                     getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
@@ -56,9 +61,6 @@ public class BlackjackMenuController {
 
         } catch (IOException e) {
             e.printStackTrace();
-    private void openGameScreen() {
-        if (gameManagerController != null) {
-            gameManagerController.launchBlackjack("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml");
         }
     }
 

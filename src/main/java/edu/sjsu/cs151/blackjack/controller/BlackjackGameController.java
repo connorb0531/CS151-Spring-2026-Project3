@@ -50,6 +50,17 @@ public class BlackjackGameController {
         standButton.setOnAction(event -> stand());
     }
 
+    public void setGame(BlackjackGame loadedGame) {
+        game = loadedGame;
+        updateUI();
+
+        if (game.isRoundActive()) {
+            enableGameButtons();
+        } else {
+            disableGameButtons();
+        }
+    }
+
     private void placeBet() {
         try {
             int amount = Integer.parseInt(betField.getText());

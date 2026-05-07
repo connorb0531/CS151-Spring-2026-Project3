@@ -15,16 +15,21 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 
 
 public class SnakeGameController {
     
-    @FXML private Canvas gameCanvas; 
+    @FXML private Canvas gameCanvas;
+
 
     private SnakeGameModel model;
     private AnimationTimer gameLoop;
     private Runnable onGameOver;
     private Image currentFoodImage;
+    private MediaPlayer musicPlayer;
 
     private static final String[] FOOD_IMAGES = {
         "/edu/sjsu/cs151/snake/view/images/atretochoana.png",
@@ -47,11 +52,25 @@ public class SnakeGameController {
         this.onGameOver = callback;
     }
 
+    private void startMusic() {
+        try {
+            java.net.URL resource = getClass().getResource("/edu/sjsu/cs151/snake/view/music/YENA.mp3");
+            Media media = new Media(resource.toString());
+            musicPlayer = new MediaPlayer(media);
+            musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            musicPlayer.setVolume(0.5);
+            musicPlayer.play();
+        } catch (Exception e) {
+            System.out.println("Could not load music: " + e.getMessage());
+        }
+    }
+
     @FXML
     public void initialize() {
         model = new SnakeGameModel();
         pickNewFoodImage();
         startGameLoop();
+        startMusic();
 
         gameCanvas.setFocusTraversable(true);
         gameCanvas.requestFocus(); 
@@ -115,7 +134,10 @@ public class SnakeGameController {
                 lastUpdate = 0;
                 pickNewFoodImage();
                 gameLoop.stop();
+                if (musicPlayer != null) musicPlayer.stop();
                 startGameLoop();
+                
+                startMusic();
             }
 
             default -> {}            

@@ -10,6 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class BlackjackGameController {
 
@@ -36,6 +39,20 @@ public class BlackjackGameController {
     @FXML private Button standButton;
 
     private BlackjackGame game;
+    private MediaPlayer musicPlayer;
+
+    private void startMusic() {
+        try {
+            java.net.URL resource = getClass().getResource("/edu/sjsu/cs151/blackjack/music/Strategy.mp3");
+            Media media = new Media(resource.toString());
+            musicPlayer = new MediaPlayer(media);
+            musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            musicPlayer.setVolume(0.5);
+            musicPlayer.play();
+        } catch (Exception e) {
+            System.out.println("Could not load blackjack music: " + e.getMessage());
+        }
+    }
 
     @FXML
     public void initialize() {
@@ -48,6 +65,8 @@ public class BlackjackGameController {
         betButton.setOnAction(event -> placeBet());
         hitButton.setOnAction(event -> hit());
         standButton.setOnAction(event -> stand());
+
+        startMusic();
     }
 
     private void placeBet() {

@@ -1,7 +1,5 @@
 package edu.sjsu.cs151.blackjack.controller;
 
-import edu.sjsu.cs151.blackjack.model.BlackjackGame;
-import edu.sjsu.cs151.blackjack.model.BlackjackGameSave;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,12 +19,6 @@ public class BlackjackMenuController {
     @FXML
     private TextArea saveStateInput;
 
-    private edu.sjsu.cs151.manager.GameManagerController gameManagerController;
-
-    public void setGameManagerController(edu.sjsu.cs151.manager.GameManagerController gmc) {
-        this.gameManagerController = gmc;
-    }
-
     public static Parent getGameView() {
         try {
             return FXMLLoader.load(
@@ -42,19 +34,16 @@ public class BlackjackMenuController {
 
     @FXML
     public void initialize() {
-        startButton.setOnAction(event -> openNewGameScreen());
+        startButton.setOnAction(event -> openGameScreen());
         loadButton.setOnAction(event -> loadGame());
     }
 
-    private void openNewGameScreen() {
-        if (gameManagerController != null) {
-            gameManagerController.launchBlackjack("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml");
-            return;
-        }
-
+    private void openGameScreen() {
         try {
             Parent gameScreen = FXMLLoader.load(
-                    getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
+                    getClass().getResource(
+                            "/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml"
+                    )
             );
 
             startButton.getScene().setRoot(gameScreen);
@@ -64,39 +53,12 @@ public class BlackjackMenuController {
         }
     }
 
-    private void openLoadedGameScreen(BlackjackGame loadedGame) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
-            );
-
-            Parent gameScreen = loader.load();
-
-            BlackjackGameController controller = loader.getController();
-            controller.setGame(loadedGame);
-
-            loadButton.getScene().setRoot(gameScreen);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void loadGame() {
         String saveStateString = saveStateInput.getText();
 
-        if (saveStateString == null || saveStateString.trim().isEmpty()) {
-            System.out.println("Please enter a saveStateString.");
-            return;
-        }
+        System.out.println("Loading game with saveStateString:");
+        System.out.println(saveStateString);
 
-        try {
-            BlackjackGame loadedGame = BlackjackGameSave.load(saveStateString.trim());
-            openLoadedGameScreen(loadedGame);
-
-        } catch (Exception e) {
-            System.out.println("Could not load game.");
-            e.printStackTrace();
-        }
+        openGameScreen();
     }
 }

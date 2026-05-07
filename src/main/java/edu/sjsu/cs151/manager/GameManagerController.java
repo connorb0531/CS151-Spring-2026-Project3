@@ -291,8 +291,9 @@ public class GameManagerController {
                 showMainMenu();
             }));
             layout.setCenter(view);
-            stage.setScene(new Scene(layout, 950, 650));
+            stage.setScene(new Scene(layout, 940, 640 + 51));
             stage.setTitle("Snake");
+
         } catch (Exception e) {
             System.out.println("Failed to load snake: " + e.getMessage());
         }

@@ -15,7 +15,12 @@ public class Food implements Collidable{
     }
 
     public void respawn() {
-        position = randomPosition();
+        Point newPos;
+        do {
+            newPos = randomPosition();
+        } while (newPos.equals(position));
+        
+        position = newPos;
     }
 
     private Point randomPosition() {

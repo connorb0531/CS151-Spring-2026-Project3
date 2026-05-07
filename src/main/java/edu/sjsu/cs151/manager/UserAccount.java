@@ -11,7 +11,7 @@ public class UserAccount {
         this.username = username;
         this.passwordHash = password;
         this.blackjackScore = 1000;
-        this.snakeScore = 1000;
+        this.snakeScore = 0;
     }
 
     public boolean checkPassword(String password) {

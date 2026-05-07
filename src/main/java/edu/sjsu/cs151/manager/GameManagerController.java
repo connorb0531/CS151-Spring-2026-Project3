@@ -267,12 +267,23 @@ public class GameManagerController {
 
     public void launchSnakeGame(String username) {
         try {
-            javafx.scene.Parent view = edu.sjsu.cs151.snake.controller.SnakeMenuController.getGameView();
+            var pair = edu.sjsu.cs151.snake.controller.SnakeGameController.getGameView();
+            javafx.scene.Parent view = pair.getKey();
+            edu.sjsu.cs151.snake.controller.SnakeGameController snakeController = pair.getValue();
+
+
+            snakeController.setOnGameOver(() -> {
+                int finalScore = snakeController.getModel().getScore();
+                scoreManager.updateSnakeScore(username, finalScore);
+            });
+
+            BorderPane toolbar = buildToolbar(() -> showMainMenu()); 
             BorderPane layout = new BorderPane();
-            layout.setTop(buildToolbar(() -> launchSnakeGame(null)));
+            layout.setTop(toolbar);  
             layout.setCenter(view);
-            stage.setScene(new Scene(layout, 950, 650));
+            stage.setScene(new Scene(layout, 940, 640 + 51));
             stage.setTitle("Snake");
+
         } catch (Exception e) {
             System.out.println("Failed to load snake: " + e.getMessage());
         }

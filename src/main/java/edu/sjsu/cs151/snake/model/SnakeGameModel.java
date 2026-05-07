@@ -2,8 +2,10 @@ package edu.sjsu.cs151.snake.model;
 
 public class SnakeGameModel {
 
-    public static final int BOARD_WIDTH = 20;
-    public static final int BOARD_HEIGHT = 20;
+    public static final int TILE = 20;
+
+    public static final int BOARD_WIDTH = 940 / TILE;
+    public static final int BOARD_HEIGHT = 640 / TILE;
 
     private Snake snake;
     private Food food;
@@ -11,9 +13,9 @@ public class SnakeGameModel {
     private SnakeGameState state;
 
     public SnakeGameModel() { 
-        snake = new Snake(BOARD_WIDTH/2, BOARD_HEIGHT / 2);
+        snake = new Snake(BOARD_WIDTH / 2, BOARD_HEIGHT / 2);
         food = new Food(BOARD_WIDTH, BOARD_HEIGHT);
-        score = 0; //ALl games start at zero
+        score = 0;
         state = SnakeGameState.RUNNING;
     }
 
@@ -29,7 +31,7 @@ public class SnakeGameModel {
 
 
         if (ateFood) {
-            score++;
+            score = score + 100;
             food.respawn();
         }
 

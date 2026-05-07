@@ -17,6 +17,8 @@ public class GameManagerController {
     private UserAccount currentUser;
     private Stage stage;
     private BorderPane rootLayout;
+    private edu.sjsu.cs151.blackjack.controller.BlackjackGameController blackjackGameController;
+    private edu.sjsu.cs151.snake.controller.SnakeGameController snakeGameController;
 
     public GameManagerController(Stage stage) {
         this.stage = stage;
@@ -253,9 +255,16 @@ public class GameManagerController {
             Object controller = loader.getController();
             if (controller instanceof edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) {
                 ((edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) controller).setGameManagerController(this);
+            } else if (controller instanceof edu.sjsu.cs151.blackjack.controller.BlackjackGameController) {
+                blackjackGameController = (edu.sjsu.cs151.blackjack.controller.BlackjackGameController) controller;
             }
             BorderPane layout = new BorderPane();
-            Runnable backAction = isGameScreen ? () -> launchBlackjack(null) : null;
+            Runnable backAction = isGameScreen ? () -> {
+                if (blackjackGameController != null) {
+                    scoreManager.updateBlackjackScore(currentUser.getUsername(), blackjackGameController.getBalance());
+                }
+                launchBlackjack(null);
+            } : null;
             layout.setTop(buildToolbar(backAction));
             layout.setCenter(view);
             stage.setScene(new Scene(layout, 950, 650));
@@ -267,9 +276,20 @@ public class GameManagerController {
 
     public void launchSnakeGame(String username) {
         try {
-            javafx.scene.Parent view = edu.sjsu.cs151.snake.controller.SnakeMenuController.getGameView();
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                edu.sjsu.cs151.snake.controller.SnakeGameController.class.getResource(
+                    "/edu/sjsu/cs151/snake/view/fxml/snake-game.fxml"
+                )
+            );
+            javafx.scene.Parent view = loader.load();
+            snakeGameController = loader.getController();
             BorderPane layout = new BorderPane();
-            layout.setTop(buildToolbar(() -> launchSnakeGame(null)));
+            layout.setTop(buildToolbar(() -> {
+                if (snakeGameController != null) {
+                    scoreManager.updateSnakeScore(currentUser.getUsername(), snakeGameController.getScore());
+                }
+                showMainMenu();
+            }));
             layout.setCenter(view);
             stage.setScene(new Scene(layout, 950, 650));
             stage.setTitle("Snake");

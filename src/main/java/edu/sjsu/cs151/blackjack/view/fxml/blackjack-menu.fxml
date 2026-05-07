@@ -18,4 +18,6 @@
 
     <Button fx:id="loadButton" text="Load Game" />
 
+    <Label fx:id="loadStatusLabel" text="" wrapText="true" maxWidth="800" />
+
 </VBox>

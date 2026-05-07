@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 import java.io.IOException;
@@ -21,6 +22,9 @@ public class BlackjackMenuController {
     @FXML
     private TextArea saveStateInput;
 
+    @FXML
+    private Label loadStatusLabel;
+
     private edu.sjsu.cs151.manager.GameManagerController gameManagerController;
 
     public void setGameManagerController(edu.sjsu.cs151.manager.GameManagerController gmc) {
@@ -35,7 +39,6 @@ public class BlackjackMenuController {
                     )
             );
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -56,37 +59,16 @@ public class BlackjackMenuController {
             Parent gameScreen = FXMLLoader.load(
                     getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
             );
-
             startButton.getScene().setRoot(gameScreen);
-
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void openLoadedGameScreen(BlackjackGame loadedGame) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
-            );
-
-            Parent gameScreen = loader.load();
-
-            BlackjackGameController controller = loader.getController();
-            controller.setGame(loadedGame);
-
-            loadButton.getScene().setRoot(gameScreen);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            // no-op fallback when running outside the GameManagerController flow
         }
     }
 
     private void loadGame() {
         String saveStateString = saveStateInput.getText();
-
         if (saveStateString == null || saveStateString.trim().isEmpty()) {
-            System.out.println("Please enter a saveStateString.");
+            setLoadStatus("Please enter a save state string.");
             return;
         }
 
@@ -94,14 +76,20 @@ public class BlackjackMenuController {
             BlackjackGameSave persistence = new BlackjackGameSave();
             BlackjackGame loadedGame = persistence.load(saveStateString.trim());
             if (loadedGame == null) {
-                System.out.println("No save matched the given state string.");
+                setLoadStatus("No save matched the given state string.");
                 return;
             }
-            openLoadedGameScreen(loadedGame);
-
+            if (gameManagerController != null) {
+                gameManagerController.launchBlackjackWithGame(loadedGame);
+            }
         } catch (Exception e) {
-            System.out.println("Could not load game.");
-            e.printStackTrace();
+            setLoadStatus("Could not load game: " + e.getMessage());
+        }
+    }
+
+    private void setLoadStatus(String message) {
+        if (loadStatusLabel != null) {
+            loadStatusLabel.setText(message);
         }
     }
 }

@@ -115,8 +115,7 @@ mvn test
 - The player can press `R` at any time (including while the game is running) to restart.
 
 
-## Video Demo LINK
-@julie
+**Video Demo:** https://youtu.be/9NIvMUjX0ko
 
 
 ## Members

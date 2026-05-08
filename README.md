@@ -52,7 +52,7 @@ mvn test
 4. Use the toolbar at the top to navigate: **Go Back** returns to the game menu, **Main Menu** returns to the main hub, **Logout** signs you out
 5. In Blackjack: enter a bet amount and click **Place Bet** to start a round, then use **Hit** or **Stand** to play
 6. In Snake: use the arrow keys to move the snake, **Escape** to pause, and **R** to restart after game over
-7. High scores are saved automatically when you exit a game — check the main menu leaderboard to see the top 5 scores for each game
+7. High scores are saved automatically when you exit a game and checks the main menu leaderboard to see the top 5 scores for each game
 
 ## Usage -- Shannon
 

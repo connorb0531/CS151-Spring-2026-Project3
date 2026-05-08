@@ -212,14 +212,24 @@ public class SnakeGameController {
 
             gc.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
 
-            gc.setFill(Color.WHITE);
-            gc.setFont(javafx.scene.text.Font.font("Verdana", 36));
-            gc.fillText("PAUSED", w / 2 - 70, h / 2 - 10);
+            javafx.scene.text.Font pauseFont = javafx.scene.text.Font.font("Verdana", 36);
+            javafx.scene.text.Font subFont = javafx.scene.text.Font.font("Verdana", 14);
+
+            javafx.scene.text.Text pauseText = new javafx.scene.text.Text("PAUSED");
+            pauseText.setFont(pauseFont);
+            double pauseW = pauseText.getLayoutBounds().getWidth();
+
+            javafx.scene.text.Text subText = new javafx.scene.text.Text("Press ESCAPE to resume");
+            subText.setFont(subFont);
+            double subW = subText.getLayoutBounds().getWidth();
 
             gc.setFill(Color.WHITE);
-            gc.setFont(javafx.scene.text.Font.font("Verdana", 14));
+            gc.setFont(pauseFont);
+            gc.fillText("PAUSED", w/2 - pauseW/2, h/2 - 10);
 
-            gc.fillText("Press ESCAPE to resume", w / 2 - 105, h / 2 + 20);
+            gc.setFill(Color.WHITE);
+            gc.setFont(subFont);
+            gc.fillText("Press ESCAPE to resume", w/2 - subW/2, h/2 + 20);
             return;
         }
 

@@ -283,6 +283,28 @@ public class GameManagerController {
         }
     }
 
+    public void launchBlackjackWithGame(edu.sjsu.cs151.blackjack.model.BlackjackGame loadedGame) {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                edu.sjsu.cs151.blackjack.controller.BlackjackMenuController.class.getResource(
+                    "/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml"
+                )
+            );
+            javafx.scene.Parent view = loader.load();
+            Object controller = loader.getController();
+            if (controller instanceof edu.sjsu.cs151.blackjack.controller.BlackjackGameController) {
+                ((edu.sjsu.cs151.blackjack.controller.BlackjackGameController) controller).setGame(loadedGame);
+            }
+            BorderPane layout = new BorderPane();
+            layout.setTop(buildToolbar(() -> launchBlackjack(null)));
+            layout.setCenter(view);
+            stage.setScene(new Scene(layout, 950, 650));
+            stage.setTitle("Blackjack");
+        } catch (Exception e) {
+            System.out.println("Failed to load blackjack game: " + e.getMessage());
+        }
+    }
+
     public void launchSnakeGame(String username) {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(

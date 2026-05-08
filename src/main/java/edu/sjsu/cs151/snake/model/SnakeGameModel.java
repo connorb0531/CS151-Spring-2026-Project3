@@ -15,7 +15,7 @@ public class SnakeGameModel {
     public SnakeGameModel() { 
         snake = new Snake(BOARD_WIDTH / 2, BOARD_HEIGHT / 2);
         food = new Food(BOARD_WIDTH, BOARD_HEIGHT);
-        score = 0;
+        score = 1000;
         state = SnakeGameState.RUNNING;
     }
 

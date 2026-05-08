@@ -80,7 +80,7 @@ public class HighScoreManager {
     // Adds a default score of 1000 for a new user in both games
     public void initialDefaultScore(String username) {
         blackjackScores.add(new HighScoreEntry(username, 1000));
-        snakeScores.add(new HighScoreEntry(username, 0));
+        snakeScores.add(new HighScoreEntry(username, 1000));
         saveScores();
     }
 

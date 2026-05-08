@@ -54,7 +54,59 @@ mvn test
 6. In Snake: use the arrow keys to move the snake, **Escape** to pause, and **R** to restart after game over
 7. High scores are saved automatically when you exit a game and checks the main menu leaderboard to see the top 5 scores for each game
 
-## Usage -- Shannon
+## Usage
+
+## Blackjack Functionality
+
+#### Placing a Bet
+- Enter a whole dollar amount into the **Bet** text field and click **Bet** to begin a round.
+- The bet must be a valid integer and cannot exceed your current bankroll; an error message will display otherwise.
+- Once a bet is placed, the round starts immediately and cards are dealt to all players and the dealer.
+- The bet field and button are disabled during an active round and re-enabled after the round ends.
+
+#### Playing Your Hand
+- **Hit:** Draws one additional card from the deck and adds it to your hand. Can be used repeatedly until you bust or choose to stand.
+- **Stand** Ends your turn without drawing. The two CPU players then take their turns, followed by the dealer, automatically.
+- Both buttons are only active during your turn and are disabled before betting and after the round concludes.
+
+#### Dealer and CPU Behavior
+- CPU players and the dealer act automatically after you stand; no input is required.
+- The dealer's second card is hidden (face-down) until it is the dealer's turn, at which point it is revealed.
+- The active player or dealer is highlighted with a green border to indicate whose turn it is.
+
+#### Round Results
+- After all participants have played, the round result is displayed in the status bar (e.g. win, loss, or bust).
+- All players' bankrolls update automatically to reflect the outcome.
+
+#### Saving and Restoring
+- **Save:** Serializes the full current game state (hands, bankrolls, round phase) into an encoded string displayed in the save field.
+- **Copy:** Copies the save string to your clipboard so it can be stored externally and loaded in a future session.
+- A saved game can be reloaded via the load screen; if the round was active when saved, hit and stand will be immediately available upon loading.
+
+  
+## Snake Game Functionality
+ 
+#### Movement
+- The player controls the snake using the arrow keys (up, down, left, right).
+- The snake continuously moves in the last input direction until redirected or the game ends.
+- The snake cannot reverse direction (e.g. cannot go left while moving right).
+- At the start of each game, the snake spawns near the center of the map with a randomly chosen direction and starting position.
+- The current score is displayed in the top-left corner of the screen and updates in real time as food is collected.
+#### Food and Growth
+- Food spawns at a random position on the grid at the start of each game.
+- When the snake's head collides with the food, the snake grows by one segment and the score increases.
+- After being collected, food immediately respawns at a new random position, including along the edges of the board.
+- Food will never respawn in the same position as the previous food item.
+#### Collision and Game Over
+- The game ends if the snake's head hits a wall or collides with any part of its own body.
+- When the game ends, a centered overlay displays the final score and a prompt to press `R` to restart.
+- The high score is persistently recorded at game over.
+#### Pause
+- The player can press `Escape` at any time to pause or resume the game.
+- While paused, all movement stops and a "PAUSED" overlay is displayed on screen.
+- Pressing `Escape` again resumes the game from where it left off.
+- The player can press `R` at any time (including while the game is running) to restart.
+
 
 ## Video Demo LINK
 @julie

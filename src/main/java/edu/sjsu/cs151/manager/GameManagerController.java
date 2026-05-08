@@ -238,6 +238,8 @@ public class GameManagerController {
     private void saveCurrentGameScore() {
         if (blackjackGameController != null && currentUser != null) {
             scoreManager.updateBlackjackScore(currentUser.getUsername(), blackjackGameController.getBalance());
+            blackjackGameController.stopMusic();
+            blackjackGameController = null;
         }
         if (snakeGameController != null && currentUser != null) {
             scoreManager.updateSnakeScore(currentUser.getUsername(), snakeGameController.getScore());
@@ -270,6 +272,8 @@ public class GameManagerController {
             Runnable backAction = isGameScreen ? () -> {
                 if (blackjackGameController != null) {
                     scoreManager.updateBlackjackScore(currentUser.getUsername(), blackjackGameController.getBalance());
+                    blackjackGameController.stopMusic();
+                    blackjackGameController = null;
                 }
                 launchBlackjack(null);
             } : null;

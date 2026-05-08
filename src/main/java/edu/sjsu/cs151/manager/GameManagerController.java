@@ -241,12 +241,11 @@ public class GameManagerController {
         }
         if (snakeGameController != null && currentUser != null) {
             scoreManager.updateSnakeScore(currentUser.getUsername(), snakeGameController.getScore());
+            snakeGameController.stopMusic();
+            snakeGameController = null;
         }
     }
 
-    public void navigateToMainMenu() {
-        showMainMenu();
-    }
 
     public void logout() {
         currentUser = null;
@@ -318,6 +317,8 @@ public class GameManagerController {
             layout.setTop(buildToolbar(() -> {
                 if (snakeGameController != null) {
                     scoreManager.updateSnakeScore(currentUser.getUsername(), snakeGameController.getScore());
+                    snakeGameController.stopMusic();
+                    snakeGameController = null;
                 }
                 showMainMenu();
             }));

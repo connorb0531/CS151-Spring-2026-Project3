@@ -52,9 +52,15 @@ public class SnakeGameController {
         this.onGameOver = callback;
     }
 
+    public void stopMusic() {
+        if (musicPlayer != null) {
+            musicPlayer.stop();
+        }
+    }
+
     private void startMusic() {
         try {
-            java.net.URI uri = new java.io.File("src/main/resources/music/YENA.mp3").toURI();
+            java.net.URI uri = new java.io.File("src/main/resources/music/magnetic.mp3").toURI();
             javafx.scene.media.Media media = new javafx.scene.media.Media(uri.toString());
 
             musicPlayer = new MediaPlayer(media);

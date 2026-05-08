@@ -31,7 +31,7 @@ Clone the repository and move into the project folder (ssh):
 
 ```bash
 git clone git@github.com:connorb0531/CS151-Spring-2026-Project3.git
-cd project3
+cd CS151-Spring-2026-Project3
 ```
 
 Compile the project:

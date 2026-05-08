@@ -1,7 +1,6 @@
 package edu.sjsu.cs151.snake.model;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class Snake implements Collidable {
 

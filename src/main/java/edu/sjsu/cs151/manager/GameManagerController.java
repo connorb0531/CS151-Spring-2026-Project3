@@ -17,6 +17,8 @@ public class GameManagerController {
     private UserAccount currentUser;
     private Stage stage;
     private BorderPane rootLayout;
+    private edu.sjsu.cs151.blackjack.controller.BlackjackGameController blackjackGameController;
+    private edu.sjsu.cs151.snake.controller.SnakeGameController snakeGameController;
 
     public GameManagerController(Stage stage) {
         this.stage = stage;
@@ -206,8 +208,8 @@ public class GameManagerController {
             "-fx-padding: 5 14 5 14;"
         );
 
-        mainMenuBtn.setOnAction(e -> showMainMenu());
-        logoutButton.setOnAction(e -> logout());
+        mainMenuBtn.setOnAction(e -> { saveCurrentGameScore(); showMainMenu(); });
+        logoutButton.setOnAction(e -> { saveCurrentGameScore(); logout(); });
 
         HBox rightButtons = new HBox(8, mainMenuBtn, logoutButton);
 
@@ -233,9 +235,19 @@ public class GameManagerController {
         return toolbar;
     }
 
-    public void navigateToMainMenu() {
-        showMainMenu();
+    private void saveCurrentGameScore() {
+        if (blackjackGameController != null && currentUser != null) {
+            scoreManager.updateBlackjackScore(currentUser.getUsername(), blackjackGameController.getBalance());
+            blackjackGameController.stopMusic();
+            blackjackGameController = null;
+        }
+        if (snakeGameController != null && currentUser != null) {
+            scoreManager.updateSnakeScore(currentUser.getUsername(), snakeGameController.getScore());
+            snakeGameController.stopMusic();
+            snakeGameController = null;
+        }
     }
+
 
     public void logout() {
         currentUser = null;
@@ -253,9 +265,18 @@ public class GameManagerController {
             Object controller = loader.getController();
             if (controller instanceof edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) {
                 ((edu.sjsu.cs151.blackjack.controller.BlackjackMenuController) controller).setGameManagerController(this);
+            } else if (controller instanceof edu.sjsu.cs151.blackjack.controller.BlackjackGameController) {
+                blackjackGameController = (edu.sjsu.cs151.blackjack.controller.BlackjackGameController) controller;
             }
             BorderPane layout = new BorderPane();
-            Runnable backAction = isGameScreen ? () -> launchBlackjack(null) : null;
+            Runnable backAction = isGameScreen ? () -> {
+                if (blackjackGameController != null) {
+                    scoreManager.updateBlackjackScore(currentUser.getUsername(), blackjackGameController.getBalance());
+                    blackjackGameController.stopMusic();
+                    blackjackGameController = null;
+                }
+                launchBlackjack(null);
+            } : null;
             layout.setTop(buildToolbar(backAction));
             layout.setCenter(view);
             stage.setScene(new Scene(layout, 950, 650));
@@ -289,19 +310,22 @@ public class GameManagerController {
 
     public void launchSnakeGame(String username) {
         try {
-            var pair = edu.sjsu.cs151.snake.controller.SnakeGameController.getGameView();
-            javafx.scene.Parent view = pair.getKey();
-            edu.sjsu.cs151.snake.controller.SnakeGameController snakeController = pair.getValue();
-
-
-            snakeController.setOnGameOver(() -> {
-                int finalScore = snakeController.getModel().getScore();
-                scoreManager.updateSnakeScore(username, finalScore);
-            });
-
-            BorderPane toolbar = buildToolbar(() -> showMainMenu()); 
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                edu.sjsu.cs151.snake.controller.SnakeGameController.class.getResource(
+                    "/edu/sjsu/cs151/snake/view/fxml/snake-game.fxml"
+                )
+            );
+            javafx.scene.Parent view = loader.load();
+            snakeGameController = loader.getController();
             BorderPane layout = new BorderPane();
-            layout.setTop(toolbar);  
+            layout.setTop(buildToolbar(() -> {
+                if (snakeGameController != null) {
+                    scoreManager.updateSnakeScore(currentUser.getUsername(), snakeGameController.getScore());
+                    snakeGameController.stopMusic();
+                    snakeGameController = null;
+                }
+                showMainMenu();
+            }));
             layout.setCenter(view);
             stage.setScene(new Scene(layout, 940, 640 + 51));
             stage.setTitle("Snake");
@@ -324,20 +348,12 @@ public class GameManagerController {
             nameLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #111111;");
 
             Label scoreLabel = new Label(String.valueOf(entry.getScore()));
-            if (i == 0) {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #185FA5;");
-            } else {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
-            }
+            scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
 
             BorderPane row = new BorderPane();
             row.setLeft(nameLabel);
             row.setRight(scoreLabel);
-            if (i == 0) {
-                row.setStyle("-fx-background-color: #f0f5ff; -fx-background-radius: 6; -fx-padding: 6 10 6 10;");
-            } else {
-                row.setStyle("-fx-padding: 6 10 6 10;");
-            }
+            row.setStyle("-fx-padding: 6 10 6 10;");
 
             blackjackScores.getChildren().add(row);
         }
@@ -354,20 +370,12 @@ public class GameManagerController {
             nameLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #111111;");
 
             Label scoreLabel = new Label(String.valueOf(entry.getScore()));
-            if (i == 0) {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #185FA5;");
-            } else {
-                scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
-            }
+            scoreLabel.setStyle("-fx-font-size: 13; -fx-text-fill: #666666;");
 
             BorderPane row = new BorderPane();
             row.setLeft(nameLabel);
             row.setRight(scoreLabel);
-            if (i == 0) {
-                row.setStyle("-fx-background-color: #f0f5ff; -fx-background-radius: 6; -fx-padding: 6 10 6 10;");
-            } else {
-                row.setStyle("-fx-padding: 6 10 6 10;");
-            }
+            row.setStyle("-fx-padding: 6 10 6 10;");
 
             snakeScores.getChildren().add(row);
         }

@@ -91,9 +91,7 @@ public class HighScoreManager {
             .mapToInt(HighScoreEntry::getScore)
             .findFirst()
             .orElse(-1);
-
         if (score <= existing) return;
-
         list.removeIf(e -> e.getUsername().equals(username));
         list.add(new HighScoreEntry(username, score));
         list.sort(Comparator.comparingInt(HighScoreEntry::getScore).reversed());

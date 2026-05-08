@@ -1,5 +1,7 @@
 package edu.sjsu.cs151.blackjack.controller;
 
+import java.io.IOException;
+
 import edu.sjsu.cs151.blackjack.model.BlackjackGame;
 import edu.sjsu.cs151.blackjack.model.BlackjackGameSave;
 import javafx.fxml.FXML;
@@ -8,8 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-
-import java.io.IOException;
 
 public class BlackjackMenuController {
 
@@ -45,11 +45,11 @@ public class BlackjackMenuController {
 
     @FXML
     public void initialize() {
-        startButton.setOnAction(event -> openNewGameScreen());
+        startButton.setOnAction(event -> openGameScreen());
         loadButton.setOnAction(event -> loadGame());
     }
 
-    private void openNewGameScreen() {
+    private void openGameScreen() {
         if (gameManagerController != null) {
             gameManagerController.launchBlackjack("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml");
             return;
@@ -59,9 +59,29 @@ public class BlackjackMenuController {
             Parent gameScreen = FXMLLoader.load(
                     getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
             );
+
             startButton.getScene().setRoot(gameScreen);
+
         } catch (IOException e) {
-            // no-op fallback when running outside the GameManagerController flow
+            e.printStackTrace();
+        }
+    }
+
+    private void openLoadedGameScreen(BlackjackGame loadedGame) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/edu/sjsu/cs151/blackjack/view/fxml/blackjack-game.fxml")
+            );
+
+            Parent gameScreen = loader.load();
+
+            BlackjackGameController controller = loader.getController();
+            controller.setGame(loadedGame);
+
+            loadButton.getScene().setRoot(gameScreen);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

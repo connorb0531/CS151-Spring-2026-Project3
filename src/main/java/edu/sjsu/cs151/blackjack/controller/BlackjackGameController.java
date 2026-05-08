@@ -17,8 +17,12 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class BlackjackGameController {
+
+    private MediaPlayer musicPlayer;
 
     @FXML private Label turnLabel;
     @FXML private Label dealerMoneyLabel;
@@ -48,6 +52,25 @@ public class BlackjackGameController {
 
     private BlackjackGame game;
 
+    private void startMusic() {
+        try {
+            java.net.URI uri = new java.io.File("src/main/resources/music/jazz.mp3").toURI();
+            Media media = new Media(uri.toString());
+            musicPlayer = new MediaPlayer(media);
+            musicPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            musicPlayer.setVolume(0.5);
+            musicPlayer.play();
+        } catch (Exception e) {
+            System.out.println("Could not load music: " + e.getMessage());
+        }
+    }
+
+    public void stopMusic() {
+        if (musicPlayer != null) {
+            musicPlayer.stop();
+        }
+    }
+
     @FXML
     public void initialize() {
         Player human = new Player("You");
@@ -55,6 +78,7 @@ public class BlackjackGameController {
 
         updateMoney();
         disableGameButtons();
+        startMusic();
 
         betButton.setOnAction(event -> placeBet());
         hitButton.setOnAction(event -> hit());
@@ -220,6 +244,8 @@ public class BlackjackGameController {
     private void highlightBox(VBox box) {
         box.setStyle("-fx-border-color: green; -fx-border-width: 3; -fx-padding: 10;");
     }
+
+    public int getBalance() { return game.getHumanPlayer().getBankRoll(); }
 
     private void disableGameButtons() {
         hitButton.setDisable(true);

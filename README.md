@@ -13,7 +13,14 @@ The project is organized into a few main packages:
 
 See Contributions section to view each team member’s role and specific project work.
 
-## Design -- Julie
+## Design 
+The project was created through object-oriented programming principines, the application itself consists of components such as the Game Manager, Blackjack Game and Snake Game. Each game is implemented by serperate models. Furthermore, the frontened GUI was built using JavaFX and FXML, while the backend game logic was constructed into model classes in order to maintain organization. Essentially, the goal of the design is to keep the game logic independent from one another. 
+
+Blackjack:
+- The game was implemented using Java and JavaFX. The game will support a user-human player along with two automated CPU players, and a dealer. The player is able to place hit, bets, stand and to play multiple rounds while their bankroll is updated throughout rounds. The backend game logic is seperated into model classes responsible for managing the overall game state.
+
+Snake:
+- The Snake game is a keyboard-controlled arcade game implemented using Java and JavaFX. The player controls the snake using arrow keys while collecting food to increase both the snake’s length and the player’s score. The GUI additionally showcases updates in real-time which displays the food, score, and game board.
 
 ## Installation
 Requirements:
